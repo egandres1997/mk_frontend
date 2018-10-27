@@ -4,7 +4,8 @@ const http = require('http')
 const app = require('express')()
 const server = http.createServer(app)
 const routes = require('./routes')
-const port = process.env.PORT || 3000
+const config = require('./config')
+const port = config.port
 
 app.use('/api/v1', routes)
 
