@@ -7,7 +7,6 @@ const jwt = require('jsonwebtoken')
 
 module.exports = {
   login: (req, res, next) => {
-
     const { email, password } = req.body
 
     if (!email || !password) {
@@ -25,28 +24,29 @@ module.exports = {
         }
 
         const passwordVerify = bcrypt.compareSync(password, user.password)
-        
-        if(!passwordVerify) {
+
+        if (!passwordVerify) {
           return res
             .status(401)
             .send({ success: false, message: 'Contraseña incorrecta.' })
         }
 
-        jwt.sign({ email: user.email, username: user.username }, config.jwtKey.secret, function(error, token) {
-          if (error)
+        jwt.sign({ email: user.email, username: user.username }, config.jwtKey.secret, function (error, token) {
+          if (error) {
             return res
-                    .status(500)
-                    .send({ success: false, message: 'Ocurrió un error al firmar sus datos.' })
+              .status(500)
+              .send({ success: false, message: 'Ocurrió un error al firmar sus datos.' })
+          }
 
           return res
-                  .status(200)
-                  .send({ success: true, message: 'Ingreso Correcto.', token })
+            .status(200)
+            .send({ success: true, message: 'Ingreso Correcto.', token })
         })
       })
       .catch((error) => {
         res
           .status(500)
-          .send({ success: false, message: "Ocurrió un error interno." })
+          .send({ success: false, message: 'Ocurrió un error interno.' })
       })
   }
 }

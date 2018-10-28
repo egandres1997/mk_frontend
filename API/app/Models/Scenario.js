@@ -6,13 +6,11 @@ class Scenario {
   static getAll () {
     return new Promise((resolve, reject) => {
       conn.query('SELECT * FROM scenarios', async (err, rows) => {
-        if (err)
-          return reject(err)
+        if (err) { return reject(err) }
 
         await rows
 
-        if(!rows.length)
-          resolve(false)
+        if (!rows.length) { resolve(false) }
 
         resolve(rows)
       })

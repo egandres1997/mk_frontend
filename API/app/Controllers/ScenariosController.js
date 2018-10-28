@@ -7,13 +7,12 @@ module.exports = {
   getAll: (req, res, next) => {
     Scenario.getAll()
       .then((scenarios) => {
-        
         res.send({})
       })
       .catch((error) => {
         res
           .status(500)
-          .send({ success: false, message: "Ocurrió un error interno." })
+          .send({ success: false, message: 'Ocurrió un error interno.' })
       })
   }
 }
