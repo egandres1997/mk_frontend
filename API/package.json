@@ -1,11 +1,11 @@
 {
-  "name": "ad_house",
+  "name": "ad_house_api",
   "version": "1.0.0",
   "description": "Simple platform for Digital House",
   "main": "server.js",
   "scripts": {
     "start": "NODE_ENV=production node server.js",
-    "dev": "standard --fix & nodemon server.js",
+    "dev": "PORT=3006 standard --fix & nodemon server.js",
     "lint": "standard"
   },
   "repository": {
@@ -20,9 +20,10 @@
   "homepage": "https://github.com/egandres1997/AD_HOUSE#readme",
   "dependencies": {
     "bcrypt": "^3.0.2",
-    "body-parser": "^1.18.3",
+    "body-parser": "1.8.1",
+    "cors": "^2.8.4",
     "dotenv": "^6.1.0",
-    "express": "^4.16.4",
+    "express": "4.9.0",
     "express-jwt": "^5.3.1",
     "jsonwebtoken": "^8.3.0",
     "mysql": "^2.16.0"

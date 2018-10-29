@@ -8,19 +8,19 @@ const jwt = require('jsonwebtoken')
 module.exports = {
   login: (req, res, next) => {
     const { email, password } = req.body
-
+  
     if (!email || !password) {
       return res
         .status(401)
         .send({ success: false, message: 'Datos incompletos para procesar la solicitud.' })
     }
 
-    User.getByEmail(email)
+    User.getByEmail (email)
       .then((user) => {
         if (!user) {
           return res
             .status(401)
-            .send({ success: false, message: 'No se encontró este usuario.' })
+            .json({ success: false, message: 'No se encontró este usuario.' })
         }
 
         const passwordVerify = bcrypt.compareSync(password, user.password)
@@ -40,13 +40,13 @@ module.exports = {
 
           return res
             .status(200)
-            .send({ success: true, message: 'Ingreso Correcto.', token })
+            .send({ success: true, message: 'Ingreso Correcto.', token, user: { email: user.email, username: user.username } })
         })
       })
       .catch((error) => {
-        res
+        return res
           .status(500)
-          .send({ success: false, message: 'Ocurrió un error interno.' })
+          .send({ success: false, message: error })
       })
   }
 }
