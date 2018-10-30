@@ -6,9 +6,11 @@ import { connect } from 'react-redux';
 import { history } from '../../_helpers';
 import { alertActions } from '../../_actions';
 import { Header } from '../../_components';
+import { LeftNavbar } from '../../_components';
 
 import { Login } from '../Login';
 import { Home } from '../Home';
+import { Administration } from '../Administration';
 
 class App extends React.Component {
     constructor(props) {
@@ -34,27 +36,14 @@ class App extends React.Component {
                 }
                 <div className="row">
                     {loggedIn &&
-                        <div className="col-sm-3">
-                            <ul className="list-group">
-                                    <li className="list-group-item">
-                                        <a href="/scenarios">
-                                            Escenarios
-                                        </a>
-                                        <span className="badge">12</span>
-                                    </li>
-                                <li className="list-group-item">
-                                    <a href="/administration">
-                                        Administración
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                        <LeftNavbar />
                     }
                     <div className={loggedIn ? 'col-sm-9' : 'col-sm-12'}>
                         <Router history={history}>
                             <div>
                                 <Route path="/login" component={Login} />
                                 <PrivateRoute exact path="/" component={Home} />
+                                <PrivateRoute exact path="/administration" component={Administration} />
                             </div>
                         </Router>
                     </div>

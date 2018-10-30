@@ -18,12 +18,12 @@ class Scenario {
   static getByUser(id_user) {
   	return new Promise((resolve, reject) => {
 
-  		const sql = ' \
+  		const sql = ` \
         SELECT SC.*  \
         FROM user_has_scenario UHS \
         LEFT JOIN scenarios SC ON SC.id = UHS.id_scenario \
-        WHERE UHS.id_user = '+id_user+' \
-      ';
+        WHERE UHS.id_user = ${id_user} \
+      `;
 
       conn.query(sql, (err, rows) => {
         if (err) { return reject(err) }
@@ -31,6 +31,21 @@ class Scenario {
         if (!rows.length) { resolve(false) }
 
         resolve(rows)
+      })
+    })
+  }
+
+  static remove(id) {
+    return new Promise((resolve, reject) => {
+
+      const sql = ` \
+        DELETE FROM scenarios WHERE id = ${id} \
+      `;
+
+      conn.query(sql, (err, rows) => {
+        if (err) { return reject(err) }
+
+        resolve(true)
       })
     })
   }

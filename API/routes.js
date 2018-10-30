@@ -15,6 +15,7 @@ routes.post('/security/login', LoginController.login)
 // Scenarios Routes
 routes.get('/scenarios/get_all', jwt(jwtKey), ScenariosController.getAll)
 routes.get('/scenarios/get_by_user/:id_user', jwt(jwtKey), ScenariosController.getByUser)
+routes.get('/scenarios/remove/:id', jwt(jwtKey), ScenariosController.remove)
 // routes.post('/login', jwt(jwtKey), LoginController.login)
 
 module.exports = routes
