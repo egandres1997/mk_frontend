@@ -19,27 +19,13 @@ function login(email, password) {
             .then((response) => response.json())
             .then((data) => {
                 if(data.success && data.token) {
-                    localStorage.setItem('jwtPayload', JSON.stringify(data.token));
+                    localStorage.setItem('jwtToken', JSON.stringify(data.token));
                     return resolve(data);
                 }
 
                 return reject(data)
-
             })
     })
-
-    /*return fetch(`${config.apiUrl}/api/v1/security/login`, requestOptions)
-        .then(handleResponse)
-        .then(user => {
-            console.log(user)
-            // login successful if there's a jwt token in the response
-            if (user.token) {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('user', JSON.stringify(user));
-            }
-
-            return user;
-        });*/
 }
 
 function logout() {
