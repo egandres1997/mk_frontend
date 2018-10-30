@@ -46,7 +46,7 @@ module.exports = {
       .catch((error) => {
         return res
           .status(500)
-          .send({ success: false, message: error })
+          .send({ success: false, message: 'Ocurrió un error interno', error: error.sqlMessage })
       })
   }
 }
