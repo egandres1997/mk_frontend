@@ -5,10 +5,8 @@ const conn = require('./Model')
 class User {
   static getAll () {
     return new Promise((resolve, reject) => {
-      conn.query('SELECT * FROM users', async (err, rows) => {
+      conn.query('SELECT * FROM users', (err, rows) => {
         if (err) { return reject(err) }
-
-        await rows
 
         if (!rows.length) { resolve(false) }
 
@@ -18,10 +16,8 @@ class User {
   }
   static getByEmail (email) {
     return new Promise((resolve, reject) => {
-      conn.query("SELECT * FROM users WHERE email = '" + email + "'", async (err, rows) => {
+      conn.query("SELECT * FROM users WHERE email = '" + email + "'", (err, rows) => {
         if (err) { return reject(err) }
-
-        await rows
 
         if (!rows.length) { resolve(false) }
 

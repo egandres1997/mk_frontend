@@ -4,15 +4,34 @@ const Scenario = require('../Models/Scenario')
 const config = require('../../config')
 
 module.exports = {
-  getAll: (req, res, next) => {
+  getAll: (req, res) => {
     Scenario.getAll()
       .then((scenarios) => {
-        res.send({})
+        res
+          .status(200)
+          .send({ success: true, message: 'Petición procesada correctamente.', rows: scenarios })
       })
       .catch((error) => {
         res
           .status(500)
-          .send({ success: false, message: 'Ocurrió un error interno.' })
+          .send({ success: false, message: 'Ocurrió un error interno.', error: error.sqlMessage })
+      })
+  },
+
+  getByUser: (req, res) => {
+
+    const { id_user } = req.params
+
+    Scenario.getByUser(id_user)
+      .then((scenarios) => {
+        res
+          .status(200)
+          .send({ success: true, message: 'Petición procesada correctamente.', rows: scenarios })
+      })
+      .catch((error) => {
+        res
+          .status(500)
+          .send({ success: false, message: 'Ocurrió un error interno.', error: error.sqlMessage })
       })
   }
 }
