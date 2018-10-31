@@ -1,19 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export const LeftNavbar = () => {
 	return (
 		<div className="col-sm-3">
             <ul className="list-group">
                 <li className="list-group-item">
-                    <a href="/">
-                        Home
-                    </a>
-                    <span className="badge">12</span>
+                    <Link to="/">Home</Link>
                 </li>
                 <li className="list-group-item">
-                    <a href="/scenarios">
-                        Administración
-                    </a>
+                    <Link to="/scenarios">Administración</Link>
                 </li>
             </ul>
         </div>
