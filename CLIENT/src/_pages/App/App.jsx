@@ -10,7 +10,7 @@ import { LeftNavbar } from '../../_components';
 
 import { Login } from '../Login';
 import { Home } from '../Home';
-import { Administration } from '../Administration';
+import { ScenariosList, ScenarioForm } from '../Scenarios';
 
 class App extends React.Component {
     constructor(props) {
@@ -30,25 +30,27 @@ class App extends React.Component {
     render() {
         const { loggedIn } = this.props;
         return (
-            <div className="container">
-                {loggedIn &&
-                    <Header logout={this.handleClickLogout}/>
-                }
-                <div className="row">
+            <Router history={history}>
+                <div className="container">
                     {loggedIn &&
-                        <LeftNavbar />
+                        <Header logout={this.handleClickLogout}/>
                     }
-                    <div className={loggedIn ? 'col-sm-9' : 'col-sm-12'}>
-                        <Router history={history}>
+                    <div className="row">
+                        {loggedIn &&
+                            <LeftNavbar />
+                        }
+                        <div className={loggedIn ? 'col-sm-9' : 'col-sm-12'}>
                             <div>
                                 <Route path="/login" component={Login} />
                                 <PrivateRoute exact path="/" component={Home} />
-                                <PrivateRoute exact path="/administration" component={Administration} />
+                                <PrivateRoute exact path="/scenarios" component={ScenariosList} />
+                                <PrivateRoute exact path="/scenarios/update/:id" component={ScenarioForm} />
+                                <PrivateRoute exact path="/scenarios/create" component={ScenarioForm} />
                             </div>
-                        </Router>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </Router>
         );
     }
 }

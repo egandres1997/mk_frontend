@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { administrationActions } from  '../../_actions'
+import { scenariosActions } from  '../../_actions'
 
 import { Table } from '../../_components'
 
-class Administration extends Component {
+class ScenariosList extends Component {
 	constructor(props) {
 		super(props)
 
@@ -13,15 +13,19 @@ class Administration extends Component {
 	}
 
 	componentDidMount() {
-		this.props.dispatch(administrationActions.getAllScenarios());
+		this.props.dispatch(scenariosActions.getAllScenarios());
 	}
 
 	handleClickEditScenario(id, e) {
-		console.log(id)
+		this.props.dispatch(scenariosActions.editScenario(id))
 	}
 
 	handleClickDeleteScenario(id, e) {
-		this.props.dispatch(administrationActions.deleteScenario(id))
+		this.props.dispatch(scenariosActions.deleteScenario(id))
+	}
+
+	handleClickProductsScenario(id, e) {
+		console.log(id)
 	}
 
 	buildTableData(scenarios) {
@@ -33,6 +37,11 @@ class Administration extends Component {
 				title: 'Editar',
 				btn: 'btn btn-primary',
 				action: this.handleClickEditScenario
+			},
+			{
+				title: 'Productos',
+				btn: 'btn btn-warning',
+				action: this.handleClickProductsScenario
 			},
 			{
 				title: 'Eliminar',
@@ -57,21 +66,30 @@ class Administration extends Component {
 	render() {
 		const { scenarios } = this.props
 
+		const alert = Object.keys(this.props.alert).length ? this.props.alert : null; 
+
 		const tableData = this.buildTableData(scenarios)
 
 		return (
-	        <Table rows={tableData.rows} columns={tableData.columns} actions={tableData.actions}/>
+			<div>
+				{alert &&
+					<div className={`alert ${alert.type}`}>{alert.message}</div>
+				}
+	        	<Table rows={tableData.rows} columns={tableData.columns} actions={tableData.actions}/>
+	        </div>
         )
 	}
 }
 
 function mapStateToProps(state) {
     const { loggingIn } = state.authentication;
+    const { alert } = state;
     return {
         loggingIn,
-        scenarios: state.scenarios.rows || []
+        scenarios: state.scenarios.rows || [],
+        alert
     };
 }
 
-const connectedAdministration = connect(mapStateToProps)(Administration);
-export { connectedAdministration as Administration }; 
+const connectedScenariosList = connect(mapStateToProps)(ScenariosList);
+export { connectedScenariosList as ScenariosList }; 

@@ -4,8 +4,9 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     entry: './src/index.jsx',
     output: {
-        path: path.resolve('dist'),
-        filename: 'bundle.js'
+        path: path.resolve(__dirname, '..', 'build'),
+        filename: 'bundle.js',
+        publicPath: '/'
     },
     resolve: {
         extensions: ['.js', '.jsx']
