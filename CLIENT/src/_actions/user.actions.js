@@ -11,6 +11,8 @@ export const userActions = {
 function login(email, password) {
     return dispatch => {
 
+        dispatch(request({ email }));
+
         userService.login(email, password)
             .then((data) => {
                 dispatch(success(data.user));

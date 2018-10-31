@@ -40,7 +40,7 @@ module.exports = {
 
           return res
             .status(200)
-            .send({ success: true, message: 'Ingreso Correcto.', token, user: { email: user.email, username: user.username } })
+            .send({ success: true, message: 'Ingreso Correcto.', user: { id: user.id, token } })
         })
       })
       .catch((error) => {

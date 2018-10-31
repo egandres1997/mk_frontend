@@ -19,10 +19,6 @@ app.use(bodyParser.json())
 
 // se implementa middleware de rutas
 app.use('/api/v1', routes)
-/*app.use(function (req, res, next) {
-    res.setHeader('Content-Type', 'application/json');
-    next();
-});*/
 
 const handleFatalError = (err) => {
   console.error('Fatal error' + err.message)

@@ -18,8 +18,8 @@ function login(email, password) {
         fetch(`${config.apiUrl}/api/v1/security/login`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
-                if(data.success && data.token) {
-                    localStorage.setItem('jwtToken', JSON.stringify(data.token));
+                if(data.success && data.user) {
+                    localStorage.setItem('user', JSON.stringify(data.user));
                     return resolve(data);
                 }
 
