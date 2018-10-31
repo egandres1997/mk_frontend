@@ -50,6 +50,23 @@ module.exports = {
           .status(500)
           .send({ success: false, message: 'Ocurrió un error interno.', error: error.sqlMessage })
       })
+  },
 
+  getById: (req, res) => {
+
+    const { id } = req.params
+
+    Scenario.getById(id)
+      .then((scenario) => {
+        res
+          .status(200)
+          .send({ success: true, message: 'Petición procesada correctamente.', row: scenario })
+      })
+      .catch((error) => {
+        res
+          .status(500)
+          .send({ success: false, message: 'Ocurrió un error interno.', error: error.sqlMessage })
+      })
   }
+
 }

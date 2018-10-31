@@ -10,6 +10,10 @@ export function scenarios(state = {}, action) {
       return {
         requestSubmitted: true
       };
+    case scenariosConstants.GETBYID_SUCCESS:
+      return {
+        onEdition: action.scenario.row
+      };
     default:
       return state
   }

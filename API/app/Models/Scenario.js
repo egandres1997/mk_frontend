@@ -8,9 +8,9 @@ class Scenario {
       conn.query('SELECT * FROM scenarios', (err, rows) => {
         if (err) { return reject(err) }
           
-        if (!rows.length) { resolve(false) }
+        if (!rows.length) { return resolve(false) }
 
-        resolve(rows)
+        return resolve(rows)
       })
     })
   }
@@ -28,9 +28,9 @@ class Scenario {
       conn.query(sql, (err, rows) => {
         if (err) { return reject(err) }
           
-        if (!rows.length) { resolve(false) }
+        if (!rows.length) { return resolve(false) }
 
-        resolve(rows)
+        return resolve(rows)
       })
     })
   }
@@ -45,7 +45,24 @@ class Scenario {
       conn.query(sql, (err, rows) => {
         if (err) { return reject(err) }
 
-        resolve(true)
+        return resolve(true)
+      })
+    })
+  }
+
+  static getById(id) {
+    return new Promise((resolve, reject) => {
+
+      const sql = ` \
+        SELECT * FROM scenarios WHERE id = ${id} \
+      `;
+
+      conn.query(sql, (err, rows) => {
+        if (err) { return reject(err) }
+
+        if(!rows.length) { return resolve(false) }
+
+        return resolve(rows[0])
       })
     })
   }
