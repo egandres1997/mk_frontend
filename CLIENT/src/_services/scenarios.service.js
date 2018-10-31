@@ -4,7 +4,8 @@ import { authHeader } from '../_helpers';
 export const scenariosService = {
     getAll,
     remove,
-    getByID
+    getByID,
+    updateScenario
 };
 
 function getAll() {
@@ -67,6 +68,33 @@ function getByID(id) {
                 if(data.success && data.row) {
                     return resolve(data);
                 }
+
+                return reject(data.message)
+            })
+    })
+}
+
+function updateScenario(id, scenario) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": authHeader('token').Authorization
+        },
+        body: `id=${id}&name=${scenario.name}&description=${scenario.description}&brief=${scenario.brief}`
+    };
+
+    console.log(scenario)
+
+    return new Promise((resolve, reject) => {
+        fetch(`${config.apiUrl}/api/v1/scenarios/update`, requestOptions)
+            .then((response) => response.json())
+            .then((data) => {
+                if(data.success && data.row) {
+                    return resolve(data);
+                }
+
+                console.log(data)
 
                 return reject(data.message)
             })

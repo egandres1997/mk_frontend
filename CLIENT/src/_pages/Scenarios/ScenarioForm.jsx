@@ -2,13 +2,25 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { scenariosActions } from  '../../_actions'
 
-import { Table } from '../../_components'
+import { Form, FormGroup, Button } from '../../_components'
 
 import { history } from '../../_helpers';
 
 class ScenarioForm extends Component {
 	constructor(props) {
 		super(props)
+
+		this.state = {
+			form: {
+				name: '',
+				description: '',
+				brief: ''
+			}
+		}
+
+		this.handleClickCreateScenario = this.handleClickCreateScenario.bind(this)
+		this.handleClickUpdateScenario = this.handleClickUpdateScenario.bind(this)
+		this.handleChange = this.handleChange.bind(this)
 	}
 
 	componentDidMount() {
@@ -19,6 +31,34 @@ class ScenarioForm extends Component {
 		}
 	}
 
+	handleClickCreateScenario(e) {
+		e.preventDefault()
+	}
+
+	handleClickUpdateScenario(id, e) {
+		e.preventDefault()
+
+		const name = e.target.elements.name.value
+		const description = e.target.elements.description.value 
+		const brief = e.target.elements.brief.value 
+
+		if(!name || !description || !brief) {
+			alert('Debe completar los campos')
+		}
+
+		this.props.dispatch(scenariosActions.updateScenario(id, { name, description, brief }));
+	}
+
+	handleChange(e) {
+		const { name, value } = e.target;
+
+        this.setState((state) => {
+        	return state.form[name] = value;
+        });
+
+        this.props.onEdition[name] = value;
+	}
+
 	render() {
 		const { onEdition } = this.props
 
@@ -27,33 +67,44 @@ class ScenarioForm extends Component {
 				<div className="alert alert-info">
 					{ onEdition ? 'Modificar Escenario' : 'Crear Escenario' }
 				</div>
-				<form className="form-horizontal" action="">
-				  	<div className="form-group">
-				    	<label className="control-label col-sm-2" htmlFor="name">Nombre:</label>
-				    	<div className="col-sm-10">
-				      		<input type="text" className="form-control" name="name" value={onEdition ? onEdition.name : ''} />
-				    	</div>
-				  	</div>
-				  	<div className="form-group">
-				    	<label className="control-label col-sm-2" htmlFor="description">Descripción:</label>
-				    	<div className="col-sm-10">
-				    		<textarea className="form-control" name="description" value={onEdition ? onEdition.description : ''}></textarea>
-				    	</div>
-				  	</div>
-				  	<div className="form-group">
-				    	<label className="control-label col-sm-2" htmlFor="brief">Brief:</label>
-				    	<div className="col-sm-10">
-				      		<input type="text" className="form-control" name="brief" value={onEdition ? onEdition.brief : ''}/>
-				    	</div>
-				  	</div>
-				  	<div className="form-group">
-				  		<div className="col-sm-12">
-				    		<button className="btn btn-primary pull-right" data-id={onEdition ? `${onEdition.id}` : null}>
-				    			{ onEdition ? 'Modificar' : 'Crear' }
-				    		</button>
-				    	</div>
-				  	</div>
-				</form>
+				<Form 
+					submittedAction={onEdition ? 
+										this.handleClickUpdateScenario.bind(this, this.props.match.params.id) : 
+										this.handleClickCreateScenario}
+				>
+					<FormGroup attributes={{labelCol: 'col-sm-2', controlName: 'name', label: 'Nombre'}}>
+						<input 
+							type="text" 
+							className="form-control" 
+							name="name" 
+							value={onEdition ? onEdition.name : this.state.form['name']} 
+							onChange={this.handleChange}
+						/>
+					</FormGroup>
+					<FormGroup attributes={{labelCol: 'col-sm-2', controlName: 'description', label: 'Descripción'}}>
+						<textarea 
+							className="form-control" 
+							name="description" 
+							value={onEdition ? onEdition.description : this.state.form['description']} 
+							onChange={this.handleChange}
+						></textarea>
+					</FormGroup>
+					<FormGroup attributes={{labelCol: 'col-sm-2', controlName: 'brief', label: 'Brief'}}>
+						<input 
+							type="text" 
+							className="form-control" 
+							name="brief" 
+							value={onEdition ? onEdition.brief : this.state.form['brief']} 
+							onChange={this.handleChange}
+						/>
+					</FormGroup>
+					<div className="col-sm-12">
+						<Button 
+							btnClass="btn btn-primary pull-right" 
+							title={ onEdition ? 'Modificar' : 'Crear' }
+						/>
+					</div>
+				</Form>
 			</div>
 		)
 	}

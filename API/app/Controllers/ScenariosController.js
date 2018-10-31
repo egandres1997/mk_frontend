@@ -67,6 +67,37 @@ module.exports = {
           .status(500)
           .send({ success: false, message: 'Ocurrió un error interno.', error: error.sqlMessage })
       })
+  },
+
+  update: (req, res) => {
+
+    const { id, name, description, brief } = req.body
+
+    if(!id || !name || !description || !brief) {
+      return res
+              .status(400)
+              .send({ success: false, message: 'No se han proporcionado todos los datos.' })
+    }
+
+    Scenario.update(id, { name, description, brief })
+      .then((result) => {
+        console.log(result)
+        if(!result) {
+          return res
+                  .status(500)
+                  .send({ success: true, message: 'No se encontró ningún registro para actualizar.' })
+        }
+
+        res
+          .status(200)
+          .send({ success: true, message: 'Petición procesada correctamente.' })
+      })
+      .catch((error) => {
+        res
+          .status(500)
+          .send({ success: false, message: 'Ocurrió un error interno.', error: error.sqlMessage })
+      })
+
   }
 
 }

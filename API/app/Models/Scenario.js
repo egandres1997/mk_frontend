@@ -66,6 +66,29 @@ class Scenario {
       })
     })
   }
+
+  static update(id, scenario) {
+    return new Promise((resolve, reject) => {
+
+      let set = []
+
+      Object.keys(scenario).map((index) => {
+        set.push(`${index} = '${scenario[index]}'`)  
+      })
+  
+      const sql = ` \
+        UPDATE scenarios SET ${set.join()} WHERE id = ${id} \
+      `;
+
+      conn.query(sql, (err, result) => {
+        if (err) { return reject(err) }
+
+        if(!result) { return resolve(false) }
+
+        return resolve(true)
+      })
+    })
+  }
 }
 
 module.exports = Scenario

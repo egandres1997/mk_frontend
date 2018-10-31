@@ -17,6 +17,7 @@ routes.get('/scenarios/get_all', jwt(jwtKey), ScenariosController.getAll)
 routes.get('/scenarios/get_by_user/:id_user', jwt(jwtKey), ScenariosController.getByUser)
 routes.get('/scenarios/remove/:id', jwt(jwtKey), ScenariosController.remove)
 routes.get('/scenarios/get_by_id/:id', jwt(jwtKey), ScenariosController.getById)
+routes.post('/scenarios/update', jwt(jwtKey), ScenariosController.update)
 // routes.post('/login', jwt(jwtKey), LoginController.login)
 
 module.exports = routes

@@ -6,7 +6,8 @@ export const scenariosActions = {
     getAllScenarios,
     deleteScenario,
     editScenario,
-    getScenarioById
+    getScenarioById,
+    updateScenario
 };
 
 function getAllScenarios() {
@@ -76,4 +77,18 @@ function getScenarioById(id) {
     function request() { return { type: scenariosConstants.GETBYID_REQUEST } }
     function success(scenario) { return { type:  scenariosConstants.GETBYID_SUCCESS, scenario } }
     function failure(message) { return { type: alertConstants.ERROR, message } }
+}
+
+function updateScenario(id, scenario) {
+    return dispatch => {
+
+        scenariosService.updateScenario(id, scenario)
+            .then((data) => {
+                console.log(data)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+
+    }
 }
