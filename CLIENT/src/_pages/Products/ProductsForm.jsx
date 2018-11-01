@@ -6,32 +6,34 @@ import { Form, FormGroup, Button } from '../../_components'
 
 import { history } from '../../_helpers';
 
-class ScenarioForm extends Component {
+class ProductsForm extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
 			form: {
 				name: '',
-				description: '',
-				brief: ''
+				img_route: '',
+				price: '',
+				earnings: '',
+				solds: ''
 			}
 		}
 
-		this.handleClickCreateScenario = this.handleClickCreateScenario.bind(this)
-		this.handleClickUpdateScenario = this.handleClickUpdateScenario.bind(this)
+		this.handleClickCreateProduct = this.handleClickCreateProduct.bind(this)
+		this.handleClickUpdateProduct = this.handleClickUpdateProduct.bind(this)
 		this.handleChange = this.handleChange.bind(this)
 	}
 
 	componentDidMount() {
 		const { onEdition } = this.props
 
-		if (this.props.match.path.match('/scenarios/update')) {
+		if (this.props.match.path.match('/products/update')) {
 			this.props.dispatch(scenariosActions.getScenarioById(this.props.match.params.id));
 		}
 	}
 
-	handleClickCreateScenario(e) {
+	handleClickCreateProduct(e) {
 		e.preventDefault()
 
 		const name = e.target.elements.name.value
@@ -46,7 +48,7 @@ class ScenarioForm extends Component {
 
 	}
 
-	handleClickUpdateScenario(id, e) {
+	handleClickUpdateProduct(id, e) {
 		e.preventDefault()
 
 		const name = e.target.elements.name.value
@@ -81,8 +83,8 @@ class ScenarioForm extends Component {
 				</div>
 				<Form 
 					submittedAction={onEdition ? 
-										this.handleClickUpdateScenario.bind(this, this.props.match.params.id) : 
-										this.handleClickCreateScenario}
+										this.handleClickUpdateProduct.bind(this, this.props.match.params.id) : 
+										this.handleClickCreateProduct}
 				>
 					<FormGroup attributes={{labelCol: 'col-sm-2', controlName: 'name', label: 'Nombre'}}>
 						<input 
@@ -128,5 +130,5 @@ function mapStateToProps(state) {
     };
 }
 
-const connectedScenarioForm = connect(mapStateToProps)(ScenarioForm);
-export { connectedScenarioForm as ScenarioForm }; 
+const connectedProductsForm = connect(mapStateToProps)(ProductsForm);
+export { connectedProductsForm as ProductsForm }; 

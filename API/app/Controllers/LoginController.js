@@ -31,7 +31,7 @@ module.exports = {
             .send({ success: false, message: 'Contraseña incorrecta.' })
         }
 
-        jwt.sign({ email: user.email, username: user.username }, config.jwtKey.secret, function (error, token) {
+        jwt.sign({ id: user.id, email: user.email, username: user.username }, config.jwtKey.secret, function (error, token) {
           if (error) {
             return res
               .status(500)

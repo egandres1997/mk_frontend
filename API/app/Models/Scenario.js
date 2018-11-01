@@ -50,11 +50,13 @@ class Scenario {
     })
   }
 
-  static getById(id) {
+  static getByIdForUser(id, id_user) {
     return new Promise((resolve, reject) => {
 
       const sql = ` \
-        SELECT * FROM scenarios WHERE id = ${id} \
+        SELECT S.* \
+        FROM user_has_scenario UHS, scenarios S \
+        WHERE UHS.id_user = ${id_user} AND UHS.id_scenario = ${id} AND UHS.id_scenario = S.id \
       `;
 
       conn.query(sql, (err, rows) => {
@@ -86,6 +88,30 @@ class Scenario {
         if(!result) { return resolve(false) }
 
         return resolve(true)
+      })
+    })
+  }
+
+  static create(scenario) {
+    return new Promise((resolve, reject) => {
+
+      let values = []
+
+      Object.keys(scenario).map((index) => {
+        values.push(`'${scenario[index]}'`)  
+      })
+  
+      const sql = ` \
+        INSERT INTO scenarios (${Object.keys(scenario).join()}) \
+        VALUES (${values.join()}) \
+      `;
+
+      conn.query(sql, (err, result) => {
+        if (err) { return reject(err) }
+
+        if(!result) { return resolve(false) }
+
+        return resolve(result.insertId)
       })
     })
   }

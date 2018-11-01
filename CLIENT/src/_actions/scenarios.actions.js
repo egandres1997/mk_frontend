@@ -7,7 +7,8 @@ export const scenariosActions = {
     deleteScenario,
     editScenario,
     getScenarioById,
-    updateScenario
+    updateScenario,
+    createScenario
 };
 
 function getAllScenarios() {
@@ -83,6 +84,20 @@ function updateScenario(id, scenario) {
     return dispatch => {
 
         scenariosService.updateScenario(id, scenario)
+            .then((data) => {
+                console.log(data)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+
+    }
+}
+
+function createScenario(scenario) {
+    return dispatch => {
+
+        scenariosService.createScenario(scenario)
             .then((data) => {
                 console.log(data)
             })

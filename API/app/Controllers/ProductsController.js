@@ -4,8 +4,12 @@ const Product = require('../Models/Product')
 const config = require('../../config')
 
 module.exports = {
-  getAll: (req, res, next) => {
-    Product.getAll()
+  getAllByScenario: (req, res, next) => {
+
+    const { id } = req.params
+    const id_user = req.user.id
+
+    Product.getAllByScenario(id, id_user)
       .then((products) => {
         res
           .status(200)

@@ -11,6 +11,7 @@ import { LeftNavbar } from '../../_components';
 import { Login } from '../Login';
 import { Home } from '../Home';
 import { ScenariosList, ScenarioForm } from '../Scenarios';
+import { ProductsForm, ProductsList } from '../Products';
 
 class App extends React.Component {
     constructor(props) {
@@ -46,6 +47,9 @@ class App extends React.Component {
                                 <PrivateRoute exact path="/scenarios" component={ScenariosList} />
                                 <PrivateRoute exact path="/scenarios/update/:id" component={ScenarioForm} />
                                 <PrivateRoute exact path="/scenarios/create" component={ScenarioForm} />
+                                <PrivateRoute exact path="/products/scenario/:id" component={ProductsList} />
+                                <PrivateRoute exact path="/products/create" component={ProductsForm} />
+                                <PrivateRoute exact path="/products/update/:id" component={ProductsForm} />
                             </div>
                         </div>
                     </div>

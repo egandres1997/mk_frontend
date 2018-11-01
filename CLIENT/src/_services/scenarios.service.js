@@ -5,7 +5,8 @@ export const scenariosService = {
     getAll,
     remove,
     getByID,
-    updateScenario
+    updateScenario,
+    createScenario
 };
 
 function getAll() {
@@ -62,7 +63,7 @@ function getByID(id) {
     };
 
     return new Promise((resolve, reject) => {
-        fetch(`${config.apiUrl}/api/v1/scenarios/get_by_id/${id}`, requestOptions)
+        fetch(`${config.apiUrl}/api/v1/scenarios/get_by_id_for_user/${id}`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
                 if(data.success && data.row) {
@@ -84,8 +85,6 @@ function updateScenario(id, scenario) {
         body: `id=${id}&name=${scenario.name}&description=${scenario.description}&brief=${scenario.brief}`
     };
 
-    console.log(scenario)
-
     return new Promise((resolve, reject) => {
         fetch(`${config.apiUrl}/api/v1/scenarios/update`, requestOptions)
             .then((response) => response.json())
@@ -94,7 +93,28 @@ function updateScenario(id, scenario) {
                     return resolve(data);
                 }
 
-                console.log(data)
+                return reject(data.message)
+            })
+    })
+}
+
+function createScenario(scenario) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": authHeader('token').Authorization
+        },
+        body: `name=${scenario.name}&description=${scenario.description}&brief=${scenario.brief}`
+    };
+
+    return new Promise((resolve, reject) => {
+        fetch(`${config.apiUrl}/api/v1/scenarios/create_for_user`, requestOptions)
+            .then((response) => response.json())
+            .then((data) => {
+                if(data.success) {
+                    return resolve(data);
+                }
 
                 return reject(data.message)
             })

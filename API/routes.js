@@ -6,6 +6,7 @@ const jwt = require('express-jwt')
 const config = require('./config')
 const LoginController = require('./app/Controllers/LoginController')
 const ScenariosController = require('./app/Controllers/ScenariosController')
+const ProductsController = require('./app/Controllers/ProductsController')
 
 const jwtKey = config.jwtKey
 
@@ -16,8 +17,11 @@ routes.post('/security/login', LoginController.login)
 routes.get('/scenarios/get_all', jwt(jwtKey), ScenariosController.getAll)
 routes.get('/scenarios/get_by_user/:id_user', jwt(jwtKey), ScenariosController.getByUser)
 routes.get('/scenarios/remove/:id', jwt(jwtKey), ScenariosController.remove)
-routes.get('/scenarios/get_by_id/:id', jwt(jwtKey), ScenariosController.getById)
+routes.get('/scenarios/get_by_id_for_user/:id', jwt(jwtKey), ScenariosController.getByIdForUser)
 routes.post('/scenarios/update', jwt(jwtKey), ScenariosController.update)
-// routes.post('/login', jwt(jwtKey), LoginController.login)
+routes.post('/scenarios/create_for_user', jwt(jwtKey), ScenariosController.createForUser)
+
+// Products Routes
+routes.get('/products/get_all_by_scenario/:id', jwt(jwtKey), ProductsController.getAllByScenario)
 
 module.exports = routes

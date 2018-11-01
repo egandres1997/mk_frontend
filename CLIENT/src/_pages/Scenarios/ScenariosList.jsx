@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { scenariosActions } from  '../../_actions'
+import { scenariosActions } from  '../../_actions';
+import { history } from '../../_helpers';
 
-import { Table } from '../../_components'
+import { Table } from '../../_components';
 
 class ScenariosList extends Component {
 	constructor(props) {
@@ -25,7 +26,7 @@ class ScenariosList extends Component {
 	}
 
 	handleClickProductsScenario(id, e) {
-		console.log(id)
+		history.push(`/products/scenario/${id}`)
 	}
 
 	buildTableData(scenarios) {
