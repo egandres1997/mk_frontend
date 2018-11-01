@@ -4,7 +4,7 @@ import { authHeader } from '../_helpers';
 export const scenariosService = {
     getAll,
     remove,
-    getByID,
+    getByIDForUser,
     updateScenario,
     createScenario
 };
@@ -53,7 +53,7 @@ function remove(id) {
     })
 }
 
-function getByID(id) {
+function getByIDForUser(id) {
     const requestOptions = {
         method: 'GET',
         headers: { 

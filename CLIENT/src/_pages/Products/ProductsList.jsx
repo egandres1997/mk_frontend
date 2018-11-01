@@ -14,16 +14,15 @@ class ProductsList extends Component {
 	}
 
 	componentDidMount() {
-		console.log(this.props)
 		this.props.dispatch(productsActions.getAllByScenario(this.props.match.params.id))
 	}
 
 	handleClickEditProduct(id, e) {
-		
+		this.props.dispatch(productsActions.editProduct(id))
 	}
 
 	handleClickDeleteProduct(id, e) {
-		
+		this.props.dispatch(productsActions.deleteProduct(id))
 	}
 
 	buildTableData(products) {
@@ -42,6 +41,18 @@ class ProductsList extends Component {
 				action: this.handleClickDeleteProduct
 			}
 		]
+
+		if (products.length) {
+			products.map((product) => {
+				rows.push({
+					'id': product.id,
+					'Nombre': product.name,
+					'Precio': product.price,
+					'Ganancias': product.earnings,
+					'Vendidos': product.solds
+				})
+			})
+		}
 
 		return { rows, columns, actions }
 	}

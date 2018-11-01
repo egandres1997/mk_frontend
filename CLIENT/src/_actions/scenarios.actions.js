@@ -65,7 +65,7 @@ function editScenario(id) {
 function getScenarioById(id) {
     return dispatch => {
 
-        scenariosService.getByID(id)
+        scenariosService.getByIDForUser(id)
             .then((data) => {
                 dispatch(success(data))
             })

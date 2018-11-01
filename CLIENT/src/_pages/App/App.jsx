@@ -48,7 +48,7 @@ class App extends React.Component {
                                 <PrivateRoute exact path="/scenarios/update/:id" component={ScenarioForm} />
                                 <PrivateRoute exact path="/scenarios/create" component={ScenarioForm} />
                                 <PrivateRoute exact path="/products/scenario/:id" component={ProductsList} />
-                                <PrivateRoute exact path="/products/create" component={ProductsForm} />
+                                <PrivateRoute exact path="/products/scenario/:id_scenario/create" component={ProductsForm} />
                                 <PrivateRoute exact path="/products/update/:id" component={ProductsForm} />
                             </div>
                         </div>

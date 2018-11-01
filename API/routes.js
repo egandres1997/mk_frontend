@@ -23,5 +23,9 @@ routes.post('/scenarios/create_for_user', jwt(jwtKey), ScenariosController.creat
 
 // Products Routes
 routes.get('/products/get_all_by_scenario/:id', jwt(jwtKey), ProductsController.getAllByScenario)
+routes.get('/products/remove/:id', jwt(jwtKey), ProductsController.remove)
+routes.get('/products/get_by_id_for_user/:id', jwt(jwtKey), ProductsController.getByIdForUser)
+routes.post('/products/update', jwt(jwtKey), ProductsController.update)
+routes.post('/products/create_for_user_and_scenario', jwt(jwtKey), ProductsController.createForUserAndScenario)
 
 module.exports = routes

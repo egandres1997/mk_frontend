@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { scenariosActions } from  '../../_actions'
+import { productsActions } from  '../../_actions'
 
 import { Form, FormGroup, Button } from '../../_components'
 
@@ -29,7 +29,7 @@ class ProductsForm extends Component {
 		const { onEdition } = this.props
 
 		if (this.props.match.path.match('/products/update')) {
-			this.props.dispatch(scenariosActions.getScenarioById(this.props.match.params.id));
+			this.props.dispatch(productsActions.getProductById(this.props.match.params.id));
 		}
 	}
 
@@ -37,14 +37,16 @@ class ProductsForm extends Component {
 		e.preventDefault()
 
 		const name = e.target.elements.name.value
-		const description = e.target.elements.description.value 
-		const brief = e.target.elements.brief.value 
+		const price = e.target.elements.price.value 
+		const earnings = e.target.elements.earnings.value 
+		const solds = e.target.elements.solds.value 
+		const img_route = e.target.elements.img_route.value 
 
-		if(!name || !description || !brief) {
+		if(!name || !price || !earnings || !solds) {
 			alert('Debe completar los campos')
 		}
 
-		this.props.dispatch(scenariosActions.createScenario({ name, description, brief }))
+		this.props.dispatch(productsActions.createProduct(this.props.match.params.id_scenario, { name, price, earnings, solds }))
 
 	}
 
@@ -52,14 +54,16 @@ class ProductsForm extends Component {
 		e.preventDefault()
 
 		const name = e.target.elements.name.value
-		const description = e.target.elements.description.value 
-		const brief = e.target.elements.brief.value 
+		const price = e.target.elements.price.value 
+		const earnings = e.target.elements.earnings.value 
+		const solds = e.target.elements.solds.value 
+		const img_route = e.target.elements.img_route.value 
 
-		if(!name || !description || !brief) {
+		if(!name || !price || !earnings || !solds) {
 			alert('Debe completar los campos')
 		}
 
-		this.props.dispatch(scenariosActions.updateScenario(id, { name, description, brief }));
+		this.props.dispatch(productsActions.updateProduct(id, { name, price, earnings, solds }));
 	}
 
 	handleChange(e) {
@@ -79,7 +83,7 @@ class ProductsForm extends Component {
 		return (
 			<div>
 				<div className="alert alert-info">
-					{ onEdition ? 'Modificar Escenario' : 'Crear Escenario' }
+					{ onEdition ? 'Modificar Producto' : 'Crear Producto' }
 				</div>
 				<Form 
 					submittedAction={onEdition ? 
@@ -95,20 +99,38 @@ class ProductsForm extends Component {
 							onChange={this.handleChange}
 						/>
 					</FormGroup>
-					<FormGroup attributes={{labelCol: 'col-sm-2', controlName: 'description', label: 'Descripción'}}>
-						<textarea 
-							className="form-control" 
-							name="description" 
-							value={onEdition ? onEdition.description : this.state.form['description']} 
-							onChange={this.handleChange}
-						></textarea>
-					</FormGroup>
-					<FormGroup attributes={{labelCol: 'col-sm-2', controlName: 'brief', label: 'Brief'}}>
+					<FormGroup attributes={{labelCol: 'col-sm-2', controlName: 'price', label: 'Precio'}}>
 						<input 
-							type="text" 
-							className="form-control" 
-							name="brief" 
-							value={onEdition ? onEdition.brief : this.state.form['brief']} 
+							type="number"
+							className="form-control"
+							name="price"
+							value={onEdition ? onEdition.price : this.state.form['price']} 
+							onChange={this.handleChange}
+						/>
+					</FormGroup>
+					<FormGroup attributes={{labelCol: 'col-sm-2', controlName: 'earnings', label: 'Ganancias'}}>
+						<input 
+							type="number"
+							className="form-control"
+							name="earnings"
+							value={onEdition ? onEdition.earnings : this.state.form['earnings']} 
+							onChange={this.handleChange}
+						/>
+					</FormGroup>
+					<FormGroup attributes={{labelCol: 'col-sm-2', controlName: 'solds', label: 'Vendidos'}}>
+						<input 
+							type="number"
+							className="form-control"
+							name="solds"
+							value={onEdition ? onEdition.solds : this.state.form['solds']} 
+							onChange={this.handleChange}
+						/>
+					</FormGroup>
+					<FormGroup attributes={{labelCol: 'col-sm-2', controlName: 'img_route', label: 'Imagen'}}>
+						<input 
+							type="file"
+							className="form-control"
+							name="img_route"
 							onChange={this.handleChange}
 						/>
 					</FormGroup>
@@ -126,7 +148,7 @@ class ProductsForm extends Component {
 
 function mapStateToProps(state) {
     return {
-    	onEdition: state.scenarios.onEdition
+    	onEdition: state.products.onEdition
     };
 }
 
