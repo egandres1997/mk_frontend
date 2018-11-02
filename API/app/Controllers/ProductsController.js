@@ -78,13 +78,14 @@ module.exports = {
               .send({ success: false, message: 'No se han proporcionado todos los datos.' })
     }
 
-    if(img_route) {
+    if(img_route != 'undefined') {
+
       const buff = new Buffer(img_route, 'base64').toString('ascii');
       const img = buff.split(',')[1];
 
       const img_name = `product_${id_user}_${moment().unix()}.jpg`
 
-      img_route = `${path.dirname(require.main.filename)}/files/${img_name}`
+      img_route = `${path.dirname(require.main.filename)}/files/${img_name}`.replace(/\\/g,"/");
 
       fs.writeFile(img_route, Buffer(img, 'base64'), function(err) {
         if(err) {
@@ -107,7 +108,8 @@ module.exports = {
         
       });
     } else {
-      Product.update(id, id_user, { name, price, earnings, solds, img_route })
+
+      Product.update(id, id_user, { name, price, earnings, solds })
         .then((result) => {
           res
             .status(200)
@@ -141,7 +143,7 @@ module.exports = {
 
     const img_name = `product_${id_user}_${moment().unix()}.jpg`
 
-    img_route = `${path.dirname(require.main.filename)}/files/${img_name}`
+    img_route = `${path.dirname(require.main.filename)}/files/${img_name}`.replace(/\\/g,"/");
 
     fs.writeFile(img_route, Buffer(img, 'base64'), function(err) {
       if(err) {
