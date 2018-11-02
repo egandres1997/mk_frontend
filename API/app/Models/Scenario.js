@@ -35,11 +35,16 @@ class Scenario {
     })
   }
 
-  static remove(id) {
+  static remove(id, id_user) {
     return new Promise((resolve, reject) => {
 
       const sql = ` \
-        DELETE FROM scenarios WHERE id = ${id} \
+        DELETE \
+        FROM scenarios \
+        WHERE id = ${id} AND ( \
+        SELECT COUNT(*) AS relation \
+        FROM user_has_scenario \
+        WHERE id_user = ${id_user} AND id_scenario = ${id}) > 0 \
       `;
 
       conn.query(sql, (err, rows) => {

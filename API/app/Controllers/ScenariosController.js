@@ -26,8 +26,9 @@ module.exports = {
   remove: (req, res) => {
     
     const { id } = req.params
+    const id_user = req.user.id
 
-    Scenario.remove(id)
+    Scenario.remove(id, id_user)
       .then(() => {
         res
           .status(200)
