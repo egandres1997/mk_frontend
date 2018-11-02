@@ -27,7 +27,7 @@ class Home extends Component {
         const columns = ['Nombre','Descripcion','Brief']
         const actions = [
             {
-                title: 'Editar',
+                title: 'Visualizar',
                 btn: 'btn btn-primary',
                 action: this.handleClickShowScenario
             }

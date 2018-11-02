@@ -117,6 +117,23 @@ class Product {
       })
     })
   }
+
+  static getImgRouteByProduct(id) {
+    return new Promise((resolve, reject) => {
+
+      const sql = ` \
+        SELECT img_route FROM products WHERE id = ${id}
+      `;
+
+      conn.query(sql, (err, rows) => {
+        if (err) { return reject(err) }
+
+        if(!rows.length) { return reject(false) }
+
+        return resolve(rows[0].img_route)
+      })
+    })
+  }
 }
 
 module.exports = Product

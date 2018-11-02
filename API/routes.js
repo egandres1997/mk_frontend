@@ -27,4 +27,6 @@ routes.get('/products/get_by_id_for_user/:id', jwt(jwtKey), ProductsController.g
 routes.post('/products/update', jwt(jwtKey), ProductsController.update)
 routes.post('/products/create_for_user_and_scenario', jwt(jwtKey), ProductsController.createForUserAndScenario)
 
+routes.get('/products/image/:id_product', ProductsController.getImageByProduct)
+
 module.exports = routes

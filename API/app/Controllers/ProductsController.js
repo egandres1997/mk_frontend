@@ -82,7 +82,9 @@ module.exports = {
       const buff = new Buffer(img_route, 'base64').toString('ascii');
       const img = buff.split(',')[1];
 
-      img_route = `${path.dirname(require.main.filename)}/files/product_${id_user}_${moment().unix()}.jpg`.replace(/\\/g,"/");
+      const img_name = `product_${id_user}_${moment().unix()}.jpg`
+
+      img_route = `${path.dirname(require.main.filename)}/files/${img_name}`
 
       fs.writeFile(img_route, Buffer(img, 'base64'), function(err) {
         if(err) {
@@ -91,7 +93,7 @@ module.exports = {
                   .send({ success: false, message: 'Ocurrió un error interno (5).', error: error })
         }
 
-        Product.update(id, id_user, { name, price, earnings, solds, img_route })
+        Product.update(id, id_user, { name, price, earnings, solds, img_route: img_name })
           .then((result) => {
             res
               .status(200)
@@ -137,7 +139,9 @@ module.exports = {
               .send({ success: false, message: 'No se han proporcionado todos los datos.' })
     }
 
-    img_route = `${path.dirname(require.main.filename)}/files/product_${id_user}_${moment().unix()}.jpg`.replace(/\\/g,"/");
+    const img_name = `product_${id_user}_${moment().unix()}.jpg`
+
+    img_route = `${path.dirname(require.main.filename)}/files/${img_name}`
 
     fs.writeFile(img_route, Buffer(img, 'base64'), function(err) {
       if(err) {
@@ -153,7 +157,7 @@ module.exports = {
             .send({ success: false, message: 'Ocurrió un error interno (1).', error: error })
         }
 
-        Product.create(id_user, { name, price, earnings, solds, img_route })
+        Product.create(id_user, { name, price, earnings, solds, img_route: img_name })
           .then(id_product => {
             Promise.all([
               UserHasProduct.createRelation(id_user, id_product),
@@ -187,7 +191,26 @@ module.exports = {
           })
       })
     });
+  },
 
+  getImageByProduct(req, res) {
 
+    const { id_product } = req.params
+
+    if(!id_product) {
+      return res
+              .status(400)
+              .send({ success: false, message: 'No se envió el id del producto.' })
+    }
+
+    Product.getImgRouteByProduct(id_product)
+      .then((img_name) => {
+        res.sendFile(`${path.dirname(require.main.filename)}/files/${img_name}`);
+      })
+      .catch(error => {
+        res
+          .status(500)
+          .send({ success: false, message: 'Ocurrió un error interno (1).' })
+      })
   }
 }

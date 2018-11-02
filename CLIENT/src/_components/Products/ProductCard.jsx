@@ -1,11 +1,11 @@
 import React from 'react'
+import path from 'path'
 
 export const ProductCard = ({ product }) => {
-	console.log(product)
 	return (
 	  	<div className="item col-xs-2 col-lg-3">
             <div className="thumbnail">
-                <img className="group list-group-image" src={product.img_route ? product.img_route : 'http://placehold.it/400x250/000/fff'} alt="" />
+                <img className="group list-group-image" src={product.img_route ? `http://localhost:3006/api/v1/products/image/${product.id}` : 'http://placehold.it/400x250/000/fff'} alt="" />
                 <div className="caption">
                 	<br />
                     <h3 className="group inner list-group-item-heading text-center">
