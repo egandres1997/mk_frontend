@@ -6,7 +6,7 @@ import { history } from '../../_helpers';
 import { alertActions, userActions, loaderActions } from '../../_actions';
 import { Login } from '../Login';
 import { Home } from '../Home';
-import { ScenariosList, ScenarioForm } from '../Scenarios';
+import { ScenariosList, ScenarioForm, ScenarioDescription } from '../Scenarios';
 import { ProductsForm, ProductsList } from '../Products';
 import '../../assets/css/app.css';
 import Loader from '../../assets/images/loader.gif';
@@ -68,6 +68,7 @@ class App extends React.Component {
                         <PrivateRoute exact path="/scenarios" component={ScenariosList} />
                         <PrivateRoute exact path="/scenarios/update/:id" component={ScenarioForm} />
                         <PrivateRoute exact path="/scenarios/create" component={ScenarioForm} />
+                        <PrivateRoute exact path="/scenarios/description/:id" component={ScenarioDescription} />
                         <PrivateRoute exact path="/products/scenario/:id" component={ProductsList} />
                         <PrivateRoute exact path="/products/scenario/:id_scenario/create" component={ProductsForm} />
                         <PrivateRoute exact path="/products/update/:id" component={ProductsForm} />

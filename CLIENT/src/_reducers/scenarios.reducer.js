@@ -14,6 +14,10 @@ export function scenarios(state = {}, action) {
       return {
         onEdition: action.scenario.row
       };
+    case scenariosConstants.GETBYID_SUCCESS_DESCRIPTION:
+      return {
+        description: action.scenario
+      };
     default:
       return state
   }

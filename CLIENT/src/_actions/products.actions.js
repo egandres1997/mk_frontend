@@ -1,6 +1,7 @@
 import { productsConstants, alertConstants } from '../_constants';
 import { loaderActions } from '../_actions';
 import { productsService } from '../_services';
+import { base64 } from '../_helpers';
 import { history } from '../_helpers';
 
 export const productsActions = {
@@ -102,13 +103,22 @@ function createProduct(id_scenario, product) {
 
         dispatch(loaderActions.loading());
 
-        productsService.create(id_scenario, product)
-            .then((result) => {
-                history.goBack()
+        base64(product.img_route)
+            .then(result => {
+
+                product.img_route = encodeURIComponent(window.btoa(result));
+
+                productsService.create(id_scenario, product)
+                    .then((result) => {
+                        history.goBack()
+                    })
+                    .catch((error) => {
+                        dispatch(failure(error.message));
+                        dispatch(loaderActions.loaded());
+                    })
             })
-            .catch((error) => {
-                dispatch(failure(error.message));
-                dispatch(loaderActions.loaded());
+            .catch(error => {
+                console.log(error)
             })
 
     };

@@ -5,6 +5,9 @@ const ScenarioHasProduct = require('../Models/ScenarioHasProduct')
 const UserHasProduct = require('../Models/UserHasProduct')
 const Model = require('../Models/Model')
 const config = require('../../config')
+const fs = require('fs')
+const moment = require('moment')
+const path = require('path')
 
 module.exports = {
   getAllByScenario: (req, res) => {
@@ -85,35 +88,57 @@ module.exports = {
   createForUserAndScenario: (req, res) => {
     
     const { id_scenario, name, price, earnings, solds } = req.body
-    const id_user = req.user.id    
+    let { img_route } = req.body
+    const id_user = req.user.id
 
-    if(!id_scenario || !name || !price || !earnings || !solds) {
+    const buff = new Buffer(img_route, 'base64').toString('ascii');
+    const img = buff.split(',')[1];
+
+    if(!id_scenario || !name || !price || !earnings || !solds || !img_route) {
       return res
               .status(400)
               .send({ success: false, message: 'No se han proporcionado todos los datos.' })
     }
 
-    Model.beginTransaction((error) => {
-      if(error) {
-        res
-          .status(500)
-          .send({ success: false, message: 'Ocurrió un error interno (1).', error: error })
+    img_route = `${path.dirname(require.main.filename)}/files/product_${id_user}_${moment().unix()}.jpg`.replace(/\\/g,"/");
+
+    fs.writeFile(img_route, Buffer(img, 'base64'), function(err) {
+      if(err) {
+        return res
+                .status(500)
+                .send({ success: false, message: 'Ocurrió un error interno (5).', error: error })
       }
 
-      Product.create(id_user, { name, price, earnings, solds })
-        .then(id_product => {
-          Promise.all([
-            UserHasProduct.createRelation(id_user, id_product),
-            ScenarioHasProduct.createRelation(id_scenario, id_product)
-          ])
-          .then(result => {
+      Model.beginTransaction((error) => {
+        if(error) {
+          res
+            .status(500)
+            .send({ success: false, message: 'Ocurrió un error interno (1).', error: error })
+        }
 
-            res
-              .status(200)
-              .send({ success: true, message: 'Petición procesada correctamente.' })
+        Product.create(id_user, { name, price, earnings, solds, img_route })
+          .then(id_product => {
+            Promise.all([
+              UserHasProduct.createRelation(id_user, id_product),
+              ScenarioHasProduct.createRelation(id_scenario, id_product)
+            ])
+            .then(result => {
 
-            Model.commit()
+              res
+                .status(200)
+                .send({ success: true, message: 'Petición procesada correctamente.' })
 
+              Model.commit()
+
+            })
+            .catch(error => {
+
+              Model.rollback()
+
+              res
+                .status(500)
+                .send({ success: false, message: 'Ocurrió un error interno (4).', error: error.sqlMessage })
+            })  
           })
           .catch(error => {
 
@@ -122,17 +147,10 @@ module.exports = {
             res
               .status(500)
               .send({ success: false, message: 'Ocurrió un error interno (4).', error: error.sqlMessage })
-          })  
-        })
-        .catch(error => {
+          })
+      })
+    });
 
-          Model.rollback()
-
-          res
-            .status(500)
-            .send({ success: false, message: 'Ocurrió un error interno (4).', error: error.sqlMessage })
-        })
-    })
 
   }
 }

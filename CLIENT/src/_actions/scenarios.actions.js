@@ -1,6 +1,6 @@
-import { scenariosConstants, alertConstants } from '../_constants';
+import { scenariosConstants, alertConstants, productsConstants } from '../_constants';
 import { loaderActions, alertAction } from '../_actions';
-import { scenariosService } from '../_services';
+import { scenariosService, productsService } from '../_services';
 import { history } from '../_helpers';
 
 export const scenariosActions = {
@@ -11,7 +11,9 @@ export const scenariosActions = {
     updateScenario,
     createScenario,
     redirectToProducts,
-    redirectToCreateForm
+    redirectToCreateForm,
+    showDescription,
+    redirectToDescription
 };
 
 function getAllScenarios() {
@@ -129,4 +131,37 @@ function redirectToCreateForm() {
     return dispatch => {
         history.push(`/scenarios/create`)
     }
+}
+
+function redirectToDescription(id) {
+    return dispatch => {
+        history.push(`/scenarios/description/${id}`);
+    }
+}
+
+function showDescription(id) {
+    return dispatch => {
+
+        dispatch(loaderActions.loading());
+
+        Promise.all([
+            scenariosService.getByIDForUser(id),
+            productsService.getAllByScenario(id)
+        ])
+        .then(results => {
+            if(results[0] && results[1]) {
+                dispatch(loaderActions.loaded());
+                dispatch(success(results[0].row));
+                dispatch({ type: productsConstants.GETALL_SUCCESS, rows: results[1].rows });
+            }
+        })
+        .catch(error => {
+            dispatch(failure(error));
+            dispatch(loaderActions.loaded());
+        })
+
+    };
+
+    function success(scenario) { return { type:  scenariosConstants.GETBYID_SUCCESS_DESCRIPTION, scenario } }
+    function failure(message) { return { type: alertConstants.ERROR, message } }
 }

@@ -6,12 +6,10 @@ export function products(state = {}, action) {
 		return {
 			rows: action.rows
 		}
-  		break;
   	case productsConstants.GETBYID_SUCCESS:
 		return {
 			onEdition: action.row
 		}
-  		break;
     default:
       return state
   }
