@@ -14,8 +14,7 @@ const jwtKey = config.jwtKey
 routes.post('/security/login', LoginController.login)
 
 // Scenarios Routes
-routes.get('/scenarios/get_all', jwt(jwtKey), ScenariosController.getAll)
-routes.get('/scenarios/get_by_user/:id_user', jwt(jwtKey), ScenariosController.getByUser)
+routes.get('/scenarios/get_all', jwt(jwtKey), ScenariosController.getAllByUser)
 routes.get('/scenarios/remove/:id', jwt(jwtKey), ScenariosController.remove)
 routes.get('/scenarios/get_by_id_for_user/:id', jwt(jwtKey), ScenariosController.getByIdForUser)
 routes.post('/scenarios/update', jwt(jwtKey), ScenariosController.update)

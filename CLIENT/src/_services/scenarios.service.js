@@ -19,7 +19,7 @@ function getAll() {
     };
 
     return new Promise((resolve, reject) => {
-        fetch(`${config.apiUrl}/api/v1/scenarios/get_by_user/${authHeader('id').id}`, requestOptions)
+        fetch(`${config.apiUrl}/api/v1/scenarios/get_all`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
                 if(data.success && data.rows) {
@@ -89,7 +89,7 @@ function updateScenario(id, scenario) {
         fetch(`${config.apiUrl}/api/v1/scenarios/update`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
-                if(data.success && data.row) {
+                if(data.success) {
                     return resolve(data);
                 }
 

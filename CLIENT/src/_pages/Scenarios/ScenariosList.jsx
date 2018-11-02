@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { scenariosActions } from  '../../_actions';
 import { history } from '../../_helpers';
 
-import { Table } from '../../_components';
+import { Table, Button } from '../../_components';
 
 class ScenariosList extends Component {
 	constructor(props) {
@@ -11,6 +11,8 @@ class ScenariosList extends Component {
 
 		this.handleClickEditScenario = this.handleClickEditScenario.bind(this)
 		this.handleClickDeleteScenario = this.handleClickDeleteScenario.bind(this)
+		this.handleClickProductsScenario = this.handleClickProductsScenario.bind(this)
+		this.handleClickCreateScenario = this.handleClickCreateScenario.bind(this)
 	}
 
 	componentDidMount() {
@@ -26,7 +28,11 @@ class ScenariosList extends Component {
 	}
 
 	handleClickProductsScenario(id, e) {
-		history.push(`/products/scenario/${id}`)
+		this.props.dispatch(scenariosActions.redirectToProducts(id));
+	}
+
+	handleClickCreateScenario() {
+		this.props.dispatch(scenariosActions.redirectToCreateForm());	
 	}
 
 	buildTableData(scenarios) {
@@ -71,12 +77,18 @@ class ScenariosList extends Component {
 
 		const tableData = this.buildTableData(scenarios)
 
+		let content = !scenarios.length ? 
+							'No se encontraron escenarios' :
+							<Table rows={tableData.rows} columns={tableData.columns} actions={tableData.actions}/>
+
 		return (
 			<div>
-				{alert &&
-					<div className={`alert ${alert.type}`}>{alert.message}</div>
-				}
-	        	<Table rows={tableData.rows} columns={tableData.columns} actions={tableData.actions}/>
+	        	{content}
+	        	<Button 
+					btnClass="btn btn-info pull-right" 
+					title="Crear Escenario"
+					action={this.handleClickCreateScenario}
+				/>
 	        </div>
         )
 	}

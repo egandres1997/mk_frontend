@@ -1,15 +1,20 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import '../assets/css/header.css';
+import { Button } from '../_components';
 
-export const Header = ({ handleClickLogout }) => {
+export const Header = ({ logout }) => {
 	return (
-		<nav className="navbar navbar-inverse">
+		<nav className="topNavbar">
 		  <div className="container-fluid">
 		    	<div className="navbar-header">
-		      		<a className="navbar-brand" href="#">AdHouse</a>
+		      		<Link className="navbar-brand" to="/">AdHouse</Link>
 		    	</div>
-		    	<button className="btn btn-danger navbar-btn pull-right" onClick={handleClickLogout}>
-		    		Cerrar Sesión
-		    	</button>
+		    	<Button 
+					btnClass="btn btn-danger navbar-btn pull-right" 
+					title="Cerrar Sesión"
+					action={logout}
+				/>
 		  	</div>
 		</nav>
 	)

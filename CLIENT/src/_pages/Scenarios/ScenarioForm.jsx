@@ -24,8 +24,6 @@ class ScenarioForm extends Component {
 	}
 
 	componentDidMount() {
-		const { onEdition } = this.props
-
 		if (this.props.match.path.match('/scenarios/update')) {
 			this.props.dispatch(scenariosActions.getScenarioById(this.props.match.params.id));
 		}

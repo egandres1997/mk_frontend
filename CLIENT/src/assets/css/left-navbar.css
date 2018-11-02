@@ -1,0 +1,21 @@
+.leftNavbar {
+	height:100;
+}
+.leftNavbar > ul {
+	margin-left:0;
+	padding-left:0;
+	border-right:1px solid #e8e7e7;
+}
+.leftNavbar > ul > li {
+	list-style: none;
+	border-bottom:1px solid #e8e7e7;
+}
+.leftNavbar > ul > li > a {
+	padding: 15px 30px;
+	display: block;
+	color: #666;
+}
+.leftNavbar > ul > li > a:hover {
+	text-decoration: none;
+	background: #e8e7e7;
+}

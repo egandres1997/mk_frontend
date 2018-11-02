@@ -6,23 +6,9 @@ const config = require('../../config')
 const Model = require('../Models/Model')
 
 module.exports = {
-  getAll: (req, res) => {
-    Scenario.getAll()
-      .then((scenarios) => {
-        res
-          .status(200)
-          .send({ success: true, message: 'Petición procesada correctamente.', rows: scenarios })
-      })
-      .catch((error) => {
-        res
-          .status(500)
-          .send({ success: false, message: 'Ocurrió un error interno.', error: error.sqlMessage })
-      })
-  },
+  getAllByUser: (req, res) => {
 
-  getByUser: (req, res) => {
-
-    const { id_user } = req.params
+    const id_user = req.user.id
 
     Scenario.getByUser(id_user)
       .then((scenarios) => {

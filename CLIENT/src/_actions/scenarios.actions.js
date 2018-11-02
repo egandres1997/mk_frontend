@@ -1,4 +1,5 @@
 import { scenariosConstants, alertConstants } from '../_constants';
+import { loaderActions, alertAction } from '../_actions';
 import { scenariosService } from '../_services';
 import { history } from '../_helpers';
 
@@ -8,74 +9,73 @@ export const scenariosActions = {
     editScenario,
     getScenarioById,
     updateScenario,
-    createScenario
+    createScenario,
+    redirectToProducts,
+    redirectToCreateForm
 };
 
 function getAllScenarios() {
     return dispatch => {
 
-        dispatch(request());
+        dispatch(loaderActions.loading());
 
         scenariosService.getAll()
             .then((data) => {
-                dispatch(success(data.rows))
+                dispatch(success(data.rows));
+                dispatch(loaderActions.loaded());
             })
             .catch((error) => {
                 dispatch(failure(error.message));
-            })
+                dispatch(loaderActions.loaded());
+            }) 
 
     };
 
-    // el request tiene que cargar un loader
-    function request() { return { type: scenariosConstants.GETALL_REQUEST} }
-    function success(rows) { return { type:  scenariosConstants.GETALL_SUCCESS, rows } }
+    function success(rows) { return {  type: scenariosConstants.GETALL_SUCCESS, rows } }
     function failure(message) { return { type: alertConstants.ERROR, message } }
 }
 
 function deleteScenario(id) {
     return dispatch => {
 
-        dispatch(request())
+        dispatch(loaderActions.loading());
         
         scenariosService.remove(id)
             .then((data) => {
-                dispatch(getAllScenarios())
-                dispatch(success(data.message))
+                history.go()
             })
             .catch((error) => {
                 dispatch(failure(error.message));
+                dispatch(loaderActions.loaded());
             })
 
     };
 
-    // el request tiene que cargar un loader
-    function request() { return { type: scenariosConstants.DELETE_REQUEST } }
-    function success(message) { return { type:  alertConstants.SUCCESS, message } }
     function failure(message) { return { type: alertConstants.ERROR, message } }
 }
 
 function editScenario(id) {
     return dispatch => {
-
         history.push(`/scenarios/update/${id}`);
-
     };
 }
 
 function getScenarioById(id) {
     return dispatch => {
 
+        dispatch(loaderActions.loading());
+
         scenariosService.getByIDForUser(id)
             .then((data) => {
-                dispatch(success(data))
+                dispatch(success(data));
+                dispatch(loaderActions.loaded());
             })
             .catch((error) => {
                 dispatch(failure(error));
+                dispatch(loaderActions.loaded());
             })
     };
 
-    // el request tiene que cargar un loader
-    function request() { return { type: scenariosConstants.GETBYID_REQUEST } }
     function success(scenario) { return { type:  scenariosConstants.GETBYID_SUCCESS, scenario } }
     function failure(message) { return { type: alertConstants.ERROR, message } }
 }
@@ -83,27 +83,50 @@ function getScenarioById(id) {
 function updateScenario(id, scenario) {
     return dispatch => {
 
+        dispatch(loaderActions.loading());
+
         scenariosService.updateScenario(id, scenario)
             .then((data) => {
-                console.log(data)
+                dispatch(loaderActions.loaded());
             })
             .catch((error) => {
-                console.log(error)
+                dispatch(failure(error));
+                dispatch(loaderActions.loaded());
             })
+    };
 
-    }
+    function success(message) { return { type:  alertConstants.SUCCESS, message } }
+    function failure(message) { return { type: alertConstants.ERROR, message } }
 }
 
 function createScenario(scenario) {
     return dispatch => {
 
+        dispatch(loaderActions.loading());
+
         scenariosService.createScenario(scenario)
             .then((data) => {
-                console.log(data)
+                dispatch(loaderActions.loaded());
+                history.push(`/scenarios`)
             })
             .catch((error) => {
-                console.log(error)
+                dispatch(failure(error));
+                dispatch(loaderActions.loaded());
             })
+    };
 
+    function success(message) { return { type:  alertConstants.SUCCESS, message } }
+    function failure(message) { return { type: alertConstants.ERROR, message } }
+}
+
+function redirectToProducts(id) {
+    return dispatch => {
+        history.push(`/products/scenario/${id}`)
+    }
+}
+
+function redirectToCreateForm() {
+    return dispatch => {
+        history.push(`/scenarios/create`)
     }
 }

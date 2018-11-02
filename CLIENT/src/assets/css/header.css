@@ -1,0 +1,8 @@
+.topNavbar {
+	background: #fff;
+	padding: 10px 0;
+	border-bottom:2px solid #e8e7e7;
+}
+.topNavbar .navbar-brand {
+	color: #cf0e3a;
+}

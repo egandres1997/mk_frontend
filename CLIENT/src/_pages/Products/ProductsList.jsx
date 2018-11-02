@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { productsActions } from  '../../_actions';
 import { history } from '../../_helpers';
-
-import { Table } from '../../_components';
+import { Table, Button } from '../../_components';
 
 class ProductsList extends Component {
 	constructor(props) {
@@ -11,6 +10,7 @@ class ProductsList extends Component {
 
 		this.handleClickEditProduct = this.handleClickEditProduct.bind(this)
 		this.handleClickDeleteProduct = this.handleClickDeleteProduct.bind(this)
+		this.handleClickCreateProduct = this.handleClickCreateProduct.bind(this)
 	}
 
 	componentDidMount() {
@@ -23,6 +23,10 @@ class ProductsList extends Component {
 
 	handleClickDeleteProduct(id, e) {
 		this.props.dispatch(productsActions.deleteProduct(id))
+	}
+
+	handleClickCreateProduct() {
+		this.props.dispatch(productsActions.redirectToCreateForm(this.props.match.params.id))
 	}
 
 	buildTableData(products) {
@@ -64,12 +68,21 @@ class ProductsList extends Component {
 
 		const tableData = this.buildTableData(products)
 
+		let content = !products.length ? 
+							'No se encontraron productos relacionados a este escenario' :
+							<Table rows={tableData.rows} columns={tableData.columns} actions={tableData.actions}/>			
+
 		return (
-			<div>
+			<div className="ProductsList">
 				{alert &&
 					<div className={`alert ${alert.type}`}>{alert.message}</div>
 				}
-	        	<Table rows={tableData.rows} columns={tableData.columns} actions={tableData.actions}/>
+	        	{ content }
+	        	<Button 
+					btnClass="btn btn-info pull-right" 
+					title="Crear Producto"
+					action={this.handleClickCreateProduct}
+				/>
 	        </div>
         )
 	}

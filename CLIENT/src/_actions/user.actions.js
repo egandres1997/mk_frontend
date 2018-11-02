@@ -1,6 +1,6 @@
 import { userConstants } from '../_constants';
 import { userService } from '../_services';
-import { alertActions } from './';
+import { alertActions, loaderActions } from './';
 import { history } from '../_helpers';
 
 export const userActions = {
@@ -11,17 +11,21 @@ export const userActions = {
 function login(email, password) {
     return dispatch => {
 
+        dispatch(loaderActions.loading());
         dispatch(request({ email }));
 
         userService.login(email, password)
             .then((data) => {
                 dispatch(success(data.user));
+                dispatch(loaderActions.loaded());
                 history.push('/');
             })
             .catch((error) => {
                 dispatch(failure(error));
                 dispatch(alertActions.error(error.message));
+                dispatch(loaderActions.loaded());
             })
+
     };
 
     function request(user) { return { type: userConstants.LOGIN_REQUEST, user } }
