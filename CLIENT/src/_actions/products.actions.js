@@ -85,14 +85,41 @@ function updateProduct(id, product) {
 
         dispatch(loaderActions.loading());
 
-        productsService.update(id, product)
-            .then((result) => {
-                history.goBack()
-            })
-            .catch((error) => {
-                dispatch(failure(error.message));
-                dispatch(loaderActions.loaded());
-            })
+        if(product.img_route) {
+            base64(product.img_route)
+                .then(result => {
+
+                    product.img_route = encodeURIComponent(window.btoa(result));
+
+                    productsService.update(id, product)
+                        .then((result) => {
+                            history.goBack()
+                        })
+                        .catch((error) => {
+                            dispatch(failure(error.message));
+                            dispatch(loaderActions.loaded());
+                        })
+
+                })
+                .catch(error => {
+                    dispatch(failure(error));
+                })
+
+        } else {
+            
+            delete product['img_route']
+
+            productsService.update(id, product)
+                .then((result) => {
+                    history.goBack()
+                })
+                .catch((error) => {
+                    dispatch(failure(error.message));
+                    dispatch(loaderActions.loaded());
+                })
+        }
+
+
     };
 
     function failure(message) { return { type: alertConstants.ERROR, message } }
@@ -118,7 +145,7 @@ function createProduct(id_scenario, product) {
                     })
             })
             .catch(error => {
-                console.log(error)
+                dispatch(failure(error));
             })
 
     };

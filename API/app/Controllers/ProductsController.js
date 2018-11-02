@@ -69,19 +69,56 @@ module.exports = {
   update: (req, res) => {
 
     const { id, name, price, earnings, solds } = req.body
+    let { img_route } = req.body
     const id_user = req.user.id
 
-    Product.update(id, id_user, { name, price, earnings, solds })
-      .then((result) => {
-        res
-          .status(200)
-          .send({ success: true, message: 'Petición procesada correctamente.' })
-      })
-      .catch((error) => {
-        res
-          .status(500)
-          .send({ success: false, message: 'Ocurrió un error interno.', error: error.sqlMessage })
-      })
+    if(!id || !name || !price || !earnings || !solds) {
+      return res
+              .status(400)
+              .send({ success: false, message: 'No se han proporcionado todos los datos.' })
+    }
+
+    if(img_route) {
+      const buff = new Buffer(img_route, 'base64').toString('ascii');
+      const img = buff.split(',')[1];
+
+      img_route = `${path.dirname(require.main.filename)}/files/product_${id_user}_${moment().unix()}.jpg`.replace(/\\/g,"/");
+
+      fs.writeFile(img_route, Buffer(img, 'base64'), function(err) {
+        if(err) {
+          return res
+                  .status(500)
+                  .send({ success: false, message: 'Ocurrió un error interno (5).', error: error })
+        }
+
+        Product.update(id, id_user, { name, price, earnings, solds, img_route })
+          .then((result) => {
+            res
+              .status(200)
+              .send({ success: true, message: 'Petición procesada correctamente.' })
+          })
+          .catch((error) => {
+            res
+              .status(500)
+              .send({ success: false, message: 'Ocurrió un error interno.', error: error.sqlMessage })
+          })
+        
+      });
+    } else {
+      Product.update(id, id_user, { name, price, earnings, solds, img_route })
+        .then((result) => {
+          res
+            .status(200)
+            .send({ success: true, message: 'Petición procesada correctamente.' })
+        })
+        .catch((error) => {
+          res
+            .status(500)
+            .send({ success: false, message: 'Ocurrió un error interno.', error: error.sqlMessage })
+        })
+    }
+
+
 
   },
 

@@ -82,7 +82,7 @@ function update(id, product) {
             "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": authHeader('token').Authorization
         },
-        body: `id=${id}&name=${product.name}&price=${product.price}&earnings=${product.earnings}&solds=${product.solds}`
+        body: `id=${id}&name=${product.name}&price=${product.price}&earnings=${product.earnings}&solds=${product.solds}&img_route=${product.img_route}`
     };
 
     return new Promise((resolve, reject) => {

@@ -7,7 +7,7 @@ export const base64 = (img) => {
             resolve(reader.result);
         };
         reader.onerror = function (error) {
-            reject(null);
+            reject('No se pudo procesar la conversión');
         };
 	});
 };

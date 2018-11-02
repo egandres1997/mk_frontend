@@ -43,9 +43,9 @@ class ProductsForm extends Component {
 		const solds = e.target.elements.solds.value
 		const img_route = e.target.elements.img_route.files[0]
 
-		/*if(!name || !price || !earnings || !solds) {
+		if(!name || !price || !earnings || !solds || !img_route) {
 			alert('Debe completar los campos')
-		}*/
+		}
 
 		this.props.dispatch(productsActions.createProduct(this.props.match.params.id_scenario, { name, price, earnings, solds, img_route }))
 
@@ -58,13 +58,13 @@ class ProductsForm extends Component {
 		const price = e.target.elements.price.value 
 		const earnings = e.target.elements.earnings.value 
 		const solds = e.target.elements.solds.value 
-		const img_route = e.target.elements.img_route.value 
+		const img_route = e.target.elements.img_route.files[0]
 
 		if(!name || !price || !earnings || !solds) {
 			alert('Debe completar los campos')
 		}
 
-		this.props.dispatch(productsActions.updateProduct(id, { name, price, earnings, solds }));
+		this.props.dispatch(productsActions.updateProduct(id, { name, price, earnings, solds, img_route }));
 	}
 
 	handleChange(e) {
