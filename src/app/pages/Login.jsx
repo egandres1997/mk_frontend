@@ -9,8 +9,23 @@ class Login extends React.Component {
 
     render() {
         return (
-            <div>
-                Login Page
+            <div className="middle-box text-center loginscreen animated fadeInDown">
+                <div>
+                    <div>
+                        <h1 className="logo-name">TR+</h1>
+                    </div>
+                    <p>Login in. To see it in action.</p>
+                    <form className="m-t" role="form" action="index.html">
+                        <div className="form-group">
+                            <input type="email" className="form-control" placeholder="Username" required="" />
+                        </div>
+                        <div className="form-group">
+                            <input type="password" className="form-control" placeholder="Password" required="" />
+                        </div>
+                        <button type="submit" className="btn btn-primary block full-width m-b">Login</button>
+                    </form>
+                    <p className="m-t"> <small>Inspinia we app framework base on Bootstrap 3 &copy; 2014</small> </p>
+                </div>
             </div>
         )
     }
