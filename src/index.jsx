@@ -1,7 +1,7 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import store from './config/store'
+import configureStore from './config/store'
 import App from './config/App'
 
 import jquery from 'jquery'
@@ -14,7 +14,7 @@ import './../node_modules/animate.css/animate.min.css'
 import './dist/assets/css/style.css'
 
 render(
-    <Provider store={store}>
+    <Provider store={configureStore.store}>
 	    <App />
     </Provider>,
     document.getElementById('root')

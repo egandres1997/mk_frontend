@@ -1,7 +1,7 @@
 import React from 'react'
 import { Router, Route, Switch } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { createBrowserHistory } from 'history'
+import history from './history'
 import routes from './routes'
 import PrivateRoute from './PrivateRoute'
 import SessionRoute from './SessionRoute'
@@ -13,12 +13,12 @@ class App extends React.Component {
 
     render() {
         return (
-            <Router history={createBrowserHistory()}>
+            <Router history={history}>
                 <Switch>
                     {routes.Privates.map((Component, index) => {
                         return (
                             <PrivateRoute 
-                                isAuthenticated={true}
+                                isAuthenticated={this.props.isAuthenticated}
                                 {...Component} 
                                 key={index}
                             />
@@ -27,7 +27,7 @@ class App extends React.Component {
                     {routes.Publics.map((Component, index) => {
                         return (
                             <SessionRoute 
-                                isAuthenticated={true}
+                                isAuthenticated={this.props.isAuthenticated}
                                 {...Component} 
                                 key={index}
                             />
