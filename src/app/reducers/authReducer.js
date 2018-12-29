@@ -8,9 +8,11 @@ const initialState = {
   permissions: [],
   error: {},
   isAuthenticated: false,
+  navigation: []
 }
 
 const LOGIN_USER = 'LOGIN_USER'
+const LOAD_NAVIGATION = 'LOAD_NAVIGATION'
 const QUERY_ERROR = 'QUERY_ERROR'
 
 // ACTIONS
@@ -19,7 +21,11 @@ export const loginAction = (data) => ({
 })
 
 export const queryError = data => ({
-    type: QUERY_ERROR, data
+  type: QUERY_ERROR, data
+})
+
+export const loadNavigationDataAction = (data) => ({
+  type: LOAD_NAVIGATION, data
 })
 
 // FUNCTIONS
@@ -29,6 +35,22 @@ export const login = (email, password) => dispatch => {
     .then(data => {
       dispatch(loginAction(data))
       history.push('/')
+    })
+    .catch(err => {
+      if (err.response && err.response.status) {
+        dispatch(queryError(getErrorResponse(err)))
+      } else {
+        dispatch(getErrorResponse(err))
+      }
+    })
+}
+
+export const loadNavigationData = () => dispatch => {
+  let config = getConfig()
+  axios.get(api.navigation, config)
+    .then(res => res.data.data)
+    .then(data => {
+      dispatch(loadNavigationDataAction(data))
     })
     .catch(err => {
       if (err.response && err.response.status) {
@@ -52,6 +74,11 @@ export default (state = initialState, action) => {
         },
         permissions: action.data.permissions,
         isAuthenticated: true
+      }
+    case LOAD_NAVIGATION:
+      return {
+        ...state,
+        navigation: action.data
       }
     case QUERY_ERROR:
       return { 

@@ -1,21 +1,37 @@
-import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import React from 'react'
+import { connect } from 'react-redux'
+import { Route, Redirect, withRouter } from 'react-router-dom'
 
-export const PrivateRoute = (props) => {
-	if(props.isAuthenticated) {
-		return (
-			<Route 
-				path={props.path} 
-				exact={props.exact} 
-				render={rest => (
-					<props.layout {...rest} component={props.toRender} />
-				)}
-			/>
-		)
-	}
-	return (
-		<Redirect to={{ pathname: '/login', state: { from: props.location } }} />
-	)
+export class PrivateRoute extends React.Component {
+
+  constructor(props) {
+    super(props)
+  }
+
+  redirect() {
+    if (!this.props.isAuthenticated) {
+      return <Redirect to={{ pathname: '/login', state: { from: this.props.location } }} />
+    } else {
+      return (
+      	<Route 
+      		exact={this.props.exact} 
+      		path={this.props.path} 
+      		render={rest => (
+      			<this.props.layout {...rest} component={this.props.component} />
+      		)} />)
+    }
+  }
+
+  render() {
+    return this.redirect()
+  }
 }
 
-export default PrivateRoute
+
+const mapStateToProps = (state) => {
+  	return {
+    	isAuthenticated: state.authReducer.isAuthenticated
+  	}
+}
+
+export default withRouter(connect(mapStateToProps)(PrivateRoute))

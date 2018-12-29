@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { Router, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { initialInputState } from '../utils/utils'
-import { login } from '../reducers/authReducer'
+import { login, loadNavigationData } from '../reducers/authReducer'
 import { Placeholder } from '../components/FormControl'
 
 class Login extends React.Component {
@@ -26,6 +26,7 @@ class Login extends React.Component {
         let emailValue = this.state.email.value
         let passwordValue = this.state.password.value
         this.props.login(emailValue, passwordValue)
+        this.props.loadNavigationData()
     }
 
     onChange (e) {
@@ -68,6 +69,9 @@ function mapDispatchToProps(dispatch) {
     return {
         login: (email, password) => {
             dispatch(login(email, password))
+        },
+        loadNavigationData: () => {
+            dispatch(loadNavigationData())
         }
     }
 }

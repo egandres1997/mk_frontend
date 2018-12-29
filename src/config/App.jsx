@@ -1,10 +1,11 @@
 import React from 'react'
-import { Router, Route, Switch } from 'react-router-dom'
+import { Router, Route, Switch, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import history from './history'
-import routes from './routes'
+import CustomRoute from './CustomRoute'
 import PrivateRoute from './PrivateRoute'
-import SessionRoute from './SessionRoute'
+import routes from './routes'
+
+import '../dist/assets/css/App.scss'
 
 class App extends React.Component {
     constructor(props) {
@@ -13,36 +14,22 @@ class App extends React.Component {
 
     render() {
         return (
-            <Router history={history}>
-                <Switch>
-                    {routes.Privates.map((Component, index) => {
-                        return (
-                            <PrivateRoute 
-                                isAuthenticated={this.props.isAuthenticated}
-                                {...Component} 
-                                key={index}
-                            />
-                        )
-                    })}
-                    {routes.Publics.map((Component, index) => {
-                        return (
-                            <SessionRoute 
-                                isAuthenticated={this.props.isAuthenticated}
-                                {...Component} 
-                                key={index}
-                            />
-                        )
-                    })}
-                </Switch>
-            </Router>
+            <Switch>
+                {routes.PublicsWithoutSession.map((route, key) => (
+                    <CustomRoute {...route} key={key}/>
+                ))}
+                {routes.Privates.map((route, key) => (
+                    <PrivateRoute {...route} key={key}/>
+                ))}
+            </Switch>
         )
     }
 }
 
 function mapStateToProps(state) {
     return {
-        isAuthenticated: state.authReducer.isAuthenticated
+        
     }
 }
 
-export default connect(mapStateToProps)(App)
+export default withRouter(connect(mapStateToProps)(App))
