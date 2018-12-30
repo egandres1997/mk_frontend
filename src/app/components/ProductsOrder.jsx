@@ -1,18 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Router, Route } from 'react-router-dom'
-import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import SweetAlert from 'sweetalert-react'
 import 'sweetalert/dist/sweetalert.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
-
-import { 
-    removeProductOfTheOrderAction, 
-    setQtyOfProductAddedOnTheOrderAction, 
-    setAmountReceivedAndReturnAction 
-} from '../reducers/managerReducer'
 
 class ProductsOrder extends React.Component {
     constructor(props) {
@@ -21,7 +13,8 @@ class ProductsOrder extends React.Component {
         this.state = {
             alerts: {
                 confirmRemoveProductOfTheOrder: false,
-                amountReceivedValidation: false
+                amountReceivedValidation: false,
+                confirmRemoveAllOrder: false
             }
         }
 
@@ -184,7 +177,11 @@ class ProductsOrder extends React.Component {
                         }
                     </tbody>
                 </table>
-                <button type="button" className="btn btn-block btn-outline btn-primary">
+                <button 
+                    type="button" 
+                    className="btn btn-block btn-outline btn-primary"
+                    onClick={this.props.sendOrder}
+                >
                     Enviar Orden
                 </button>
             </React.Fragment>
@@ -217,12 +214,35 @@ class ProductsOrder extends React.Component {
     	})
     }
 
+    setConfirmRemoveAllOrderState(state) {
+        this.setState({ 
+            ...this.state,
+            alerts: {
+                ...this.state.alerts,
+                confirmRemoveAllOrder: state
+            } 
+        })
+    }
+
+    removeOrder() {
+        this.props.removeOrder()
+        this.setConfirmRemoveAllOrderState(false)
+    }
+
     render() {
 		return (
 			<React.Fragment>
                 <div className="ibox">
                     <div className="ibox-title">
                         <h5>Items en la orden</h5>
+                        <div className="pull-right">
+                            <button 
+                                className="btn btn-xs btn-outline btn-danger"
+                                onClick={() => this.setConfirmRemoveAllOrderState(true)}
+                            >
+                                Cancelar Orden
+                            </button>
+                        </div>
                     </div>
                     <div className="ibox-content">
                         {this.productsAddedToTheOrder()}
@@ -237,29 +257,17 @@ class ProductsOrder extends React.Component {
 			        showCancelButton={true}
 			        onCancel={() => this.setConfirmRemoveProductOfTheOrderState(false)}
 			    />
+                <SweetAlert
+                    show={this.state.alerts.confirmRemoveAllOrder}
+                    title="Atención!"
+                    text="Seguro que desea eliminar por completo esta orden?"
+                    onConfirm={this.removeOrder.bind(this)}
+                    showCancelButton={true}
+                    onCancel={() => this.setConfirmRemoveAllOrderState(false)}
+                />
             </React.Fragment>
 		)
 	}
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        removeProductOfTheOrder: (product_id) => {
-            dispatch(removeProductOfTheOrderAction(product_id))
-        },
-        setQtyOfProductAddedOnTheOrder: (product_id, newQty) => {
-        	dispatch(setQtyOfProductAddedOnTheOrderAction(product_id, newQty))
-        },
-        setAmountReceivedAndReturn: (value) => {
-            dispatch(setAmountReceivedAndReturnAction(value))
-        }
-    }
-}
-
-function mapStateToProps(state) {
-    return {
-        
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProductsOrder)
+export default ProductsOrder

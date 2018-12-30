@@ -8,5 +8,5 @@ export default {
   base,
   login: base + tokens,
   navigation: base + navigation,
-  articles: base + articles
+  articles: base + articles,
 }

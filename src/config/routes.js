@@ -2,7 +2,7 @@ import Main from '../app/pages/layouts/Main'
 import Blank from '../app/pages/layouts/Blank'
 import Home from '../app/pages/Home'
 import Login from '../app/pages/Login'
-import Sales from '../app/pages/Sales'
+import SaleManager from '../app/pages/SaleManager'
 
 const routes = {
 	Privates: [
@@ -15,7 +15,7 @@ const routes = {
 		{
 			path: '/ventas',
 			exact: true,
-			component: Sales,
+			component: SaleManager,
 			layout: Main
 		}
 	],

@@ -1,22 +1,31 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import _ from 'lodash'
-import { connect } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTh, faList, faPlus, faSearch } from '@fortawesome/free-solid-svg-icons'
 import Masonry from 'react-masonry-component'
 
-import { searchProducts, addProductToTheOrderAction } from '../reducers/managerReducer'
-
-class ProductsGrid extends React.Component {
+class ProductsGrid extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            modeActive: 'list'
+            modeActive: 'list',
+            inputSearchProducts: '',
+            activeOrderId: this.props.activeOrderId
         }
 
         this.searchProducts = this.searchProducts.bind(this)
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        if(props.activeOrderId !== state.activeOrderId) {
+            return {
+                inputSearchProducts: "",
+                activeOrderId: props.activeOrderId
+            }
+        }
+        return state
     }
 
     productsGrid() {
@@ -149,8 +158,14 @@ class ProductsGrid extends React.Component {
 
     searchProducts(e) {
         e.preventDefault()
-        let toSearch = ReactDOM.findDOMNode(this.searchProductRef).value
-        this.props.searchProducts(toSearch)
+        this.props.searchProducts(this.state.inputSearchProducts)
+    }
+
+    onChangeSearchProducts(e) {
+        this.setState({
+            ...this.state,
+            inputSearchProducts: e.target.value
+        })
     }
 
     render() {
@@ -184,7 +199,8 @@ class ProductsGrid extends React.Component {
                                             type="text" 
                                             className="form-control" 
                                             placeholder="Buscar producto..."
-                                            ref={node => this.searchProductRef = node}
+                                            onChange={this.onChangeSearchProducts.bind(this)}
+                                            value={this.state.inputSearchProducts}
                                         /> 
                                         <span className="input-group-btn"> 
                                             <button type="submit" className="btn btn-primary">
@@ -205,21 +221,4 @@ class ProductsGrid extends React.Component {
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        searchProducts: (toSearch) => {
-            dispatch(searchProducts(toSearch))
-        },
-        addProductToTheOrder: (product) => {
-            dispatch(addProductToTheOrderAction(product))
-        }
-    }
-}
-
-function mapStateToProps(state) {
-    return {
-        
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProductsGrid)
+export default ProductsGrid
