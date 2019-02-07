@@ -1,10 +1,20 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 import authReducer from '../app/reducers/authReducer'
+import managerReducer from '../app/reducers/managerReducer'
+import { routerMiddleware } from 'react-router-redux'
+import { persistStore, persistCombineReducers } from 'redux-persist'
+import storageSession from 'redux-persist/lib/storage/session'
 
-const rootReducer = combineReducers({
-  authReducer
+const config = {
+	key: 'primary',
+	storage: storageSession
+}
+
+const rootReducer = persistCombineReducers(config, {
+  authReducer,
+  managerReducer
 });
 
 const loggerMiddleware = createLogger();
@@ -14,8 +24,18 @@ const store = createStore(
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
     applyMiddleware(
         thunkMiddleware,
+        routerMiddleware(history),
         loggerMiddleware
     )
-);
+)
 
-export default store
+let persistor = persistStore(
+    store,
+    null,
+    (
+    ) => {
+        store.getState()
+    }
+)
+
+export default ({ store, persistor })

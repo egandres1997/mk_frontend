@@ -5,7 +5,7 @@ var webpack = require('webpack');
 module.exports = {
     entry: './src/index.jsx',
     output: {
-        path: path.resolve(__dirname, '..', 'build'),
+        path: path.resolve(__dirname, 'build'),
         filename: 'bundle.js',
         publicPath: '/'
     },
@@ -25,6 +25,10 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader']
+            },
+            {
+              test: /\.scss$/,
+              use: ['style-loader', 'css-loader', 'sass-loader']
             },
             { test: /\.gif$/, loader: "url-loader" },
             {
