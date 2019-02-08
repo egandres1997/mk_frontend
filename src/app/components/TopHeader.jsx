@@ -19,8 +19,11 @@ class TopHeader extends React.Component {
                     </div>
                     <ul className="nav navbar-top-links navbar-right">
                         <li>
-                            <a href="#">
-                                <i className="fa fa-sign-out"></i> Log out
+                            <a href="#" onClick={e => {
+                                e.preventDefault()
+                                this.props.logout()
+                            }}>
+                                <i className="fa fa-sign-out"></i> Cerrar Sesión
                             </a>
                         </li>
                     </ul>

@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Route, Redirect, withRouter } from 'react-router-dom'
+import { logoutAction } from '../app/reducers/authReducer'
 
 export class PrivateRoute extends React.Component {
 
@@ -17,7 +18,7 @@ export class PrivateRoute extends React.Component {
       		exact={this.props.exact} 
       		path={this.props.path} 
       		render={rest => (
-      			<this.props.layout {...rest} component={this.props.component} />
+      			<this.props.layout {...rest} component={this.props.component} logout={this.props.logout} />
       		)} />)
     }
   }
@@ -27,6 +28,13 @@ export class PrivateRoute extends React.Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logout: () => {
+      dispatch(logoutAction())
+    }
+  }
+}
 
 const mapStateToProps = (state) => {
   	return {
@@ -34,4 +42,4 @@ const mapStateToProps = (state) => {
   	}
 }
 
-export default withRouter(connect(mapStateToProps)(PrivateRoute))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PrivateRoute))

@@ -13,15 +13,15 @@ const initialState = {
 
 const LOGIN_USER = 'LOGIN_USER'
 const LOAD_NAVIGATION = 'LOAD_NAVIGATION'
-const QUERY_ERROR = 'QUERY_ERROR'
+const LOGOUT = 'LOGOUT'
 
 // ACTIONS
 export const loginAction = (data) => ({
   type: LOGIN_USER, data
 })
 
-export const queryError = data => ({
-  type: QUERY_ERROR, data
+export const logoutAction = () => ({
+  type: LOGOUT
 })
 
 export const loadNavigationDataAction = (data) => ({
@@ -37,11 +37,7 @@ export const login = (email, password) => dispatch => {
       history.push('/')
     })
     .catch(err => {
-      if (err.response && err.response.status) {
-        dispatch(queryError(getErrorResponse(err)))
-      } else {
-        dispatch(getErrorResponse(err))
-      }
+      dispatch(getErrorResponse(err))
     })
 }
 
@@ -53,11 +49,7 @@ export const loadNavigationData = () => dispatch => {
       dispatch(loadNavigationDataAction(data))
     })
     .catch(err => {
-      if (err.response && err.response.status) {
-        dispatch(queryError(getErrorResponse(err)))
-      } else {
-        dispatch(getErrorResponse(err))
-      }
+      dispatch(getErrorResponse(err))
     })
 }
 
@@ -80,10 +72,8 @@ export default (state = initialState, action) => {
         ...state,
         navigation: action.data
       }
-    case QUERY_ERROR:
-      return { 
-        ...state
-      }
+    case LOGOUT:
+      return initialState
     default:
       return state
   }

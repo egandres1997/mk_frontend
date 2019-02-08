@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { initialInputState } from '../utils/utils'
 import { login, loadNavigationData } from '../reducers/authReducer'
 import { Placeholder } from '../components/FormControl'
+import { setAction } from '../reducers/actionReducer'
 
 class Login extends React.Component {
     constructor(props) {
@@ -17,16 +18,26 @@ class Login extends React.Component {
 
         this.onClick = this.onClick.bind(this)
         this.onChange = this.onChange.bind(this)
+        this.getAlert = this.getAlert.bind(this)
         this.emailRef = React.createRef()
         this.passwordRef = React.createRef()
+    }
+
+    componentDidMount() {
+        this.props.setAction(false)
     }
 
     onClick (e) {
         e.preventDefault()
         let emailValue = this.state.email.value
         let passwordValue = this.state.password.value
-        this.props.login(emailValue, passwordValue)
-        this.props.loadNavigationData()
+
+        if (emailValue === "" || passwordValue === "") {
+            this.props.setAction(true, 422, "Email y Password necesarios.")
+        } else {
+            this.props.login(emailValue, passwordValue)
+            this.props.loadNavigationData()
+        }
     }
 
     onChange (e) {
@@ -39,6 +50,22 @@ class Login extends React.Component {
         })
     }
 
+    getAlert() {
+        if (this.props.action.shouldItBeSeen) {
+            return (
+                <div 
+                    className={"alert alert-" + (this.props.action.actionStatus === 422 ? 'danger' : 'success')}
+                >
+                {this.props.action.actionStatus === 422
+                    ? (<React.Fragment><strong>Error: </strong> {this.props.action.actionMessage}</React.Fragment>)
+                    : (<React.Fragment><strong>Éxito: </strong> {this.props.action.actionMessage}</React.Fragment>)
+                }
+                </div>
+            )
+        }
+        return null
+    }
+
     render() {
         return (
             <div className="middle-box text-center loginscreen animated fadeInDown">
@@ -47,6 +74,7 @@ class Login extends React.Component {
                         <h1 className="logo-name">TR+</h1>
                     </div>
                     <form className="m-t" role="form">
+                        {this.getAlert()}
                         <Placeholder
                             {...this.state.email}
                             ref={this.emailRef}
@@ -72,13 +100,16 @@ function mapDispatchToProps(dispatch) {
         },
         loadNavigationData: () => {
             dispatch(loadNavigationData())
+        },
+        setAction: (shouldItBeSeen, actionStatus, actionMessage) => {
+            dispatch(setAction(shouldItBeSeen, actionStatus, actionMessage))
         }
     }
 }
 
 function mapStateToProps(state) {
     return {
-
+        action: state.actionReducer
     }
 }
 
