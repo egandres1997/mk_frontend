@@ -1,11 +1,12 @@
 import { createStore, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import { createLogger } from 'redux-logger'
-import authReducer from '../app/reducers/authReducer'
-import managerReducer from '../app/reducers/managerReducer'
 import { routerMiddleware } from 'react-router-redux'
 import { persistStore, persistCombineReducers } from 'redux-persist'
 import storageSession from 'redux-persist/lib/storage/session'
+import authReducer from '../app/reducers/authReducer'
+import managerReducer from '../app/reducers/managerReducer'
+import actionReducer from '../app/reducers/actionReducer'
 
 const config = {
 	key: 'primary',
@@ -14,7 +15,8 @@ const config = {
 
 const rootReducer = persistCombineReducers(config, {
   authReducer,
-  managerReducer
+  managerReducer,
+  actionReducer
 });
 
 const loggerMiddleware = createLogger();

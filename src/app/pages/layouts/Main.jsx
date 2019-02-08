@@ -16,7 +16,7 @@ class Main extends React.Component {
 
                 <div id="page-wrapper" className={wrapperClass}>
 
-                    <TopHeader />
+                    <TopHeader logout={this.props.logout} />
 
                     <this.props.component />
 
