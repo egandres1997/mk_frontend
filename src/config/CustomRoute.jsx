@@ -1,16 +1,39 @@
 import React from 'react'
-import { Route, Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { Route, Redirect, withRouter } from 'react-router-dom'
+import history from './history'
 
-export const CustomRoute = (props) => {
-	return (
-		<Route 
-			exact={props.exact} 
-			path={props.path}
-			render={rest => (
-				<props.layout component={props.component} {...rest} />
-			)} 
-		/>
-	)
+export class CustomRoute extends React.Component {
+
+  constructor(props) {
+    super(props)
+  }
+
+  redirect() {
+    if (!this.props.isAuthenticated) {
+      return (
+      	<Route 
+					exact={this.props.exact} 
+					path={this.props.path}
+					render={rest => (
+						<this.props.layout component={this.props.component} {...rest} />
+					)} 
+				/>
+			)
+    } else {
+      return <Redirect to={{ pathname: this.props.match.path, state: { from: '/login' } }} />
+    }
+  }
+
+  render() {
+    return this.redirect()
+  }
 }
 
-export default CustomRoute
+const mapStateToProps = (state) => {
+  	return {
+    	isAuthenticated: state.authReducer.isAuthenticated
+  	}
+}
+
+export default withRouter(connect(mapStateToProps)(CustomRoute))
