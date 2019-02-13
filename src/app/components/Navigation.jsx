@@ -10,7 +10,7 @@ class Navigation extends Component {
         super(props)
 
         this.state = {
-            active: _.find(this.props.navigation, { nombre_ruta: this.props.location.pathname }).id
+            active: _.find(this.props.navigation.items, { nombre_ruta: this.props.location.pathname }).id
         }
     }
 
@@ -49,7 +49,7 @@ class Navigation extends Component {
         let parents = []
         let childrens = []
 
-        this.props.navigation.forEach((item) => {
+        this.props.navigation.items.forEach((item) => {
             if(!item.id_padre) {
                 parents.push(item)
             } else {

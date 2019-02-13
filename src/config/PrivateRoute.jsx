@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Route, Redirect, withRouter } from 'react-router-dom'
-import { logoutAction } from '../app/reducers/authReducer'
+import { logout } from '../app/reducers/authReducer'
 
 export class PrivateRoute extends React.Component {
 
@@ -31,7 +31,7 @@ export class PrivateRoute extends React.Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     logout: () => {
-      dispatch(logoutAction())
+      dispatch(logout())
     }
   }
 }

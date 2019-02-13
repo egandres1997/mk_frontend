@@ -8,7 +8,10 @@ const initialState = {
   permissions: [],
   error: {},
   isAuthenticated: false,
-  navigation: []
+  navigation: {
+    isLoaded: false,
+    items: []
+  }
 }
 
 const LOGIN_USER = 'LOGIN_USER'
@@ -41,6 +44,11 @@ export const login = (email, password) => dispatch => {
     })
 }
 
+export const logout = () => dispatch => {
+  history.push('/login')
+  dispatch(logoutAction())
+}
+ 
 export const loadNavigationData = () => dispatch => {
   let config = getConfig()
   axios.get(api.navigation, config)
@@ -70,7 +78,10 @@ export default (state = initialState, action) => {
     case LOAD_NAVIGATION:
       return {
         ...state,
-        navigation: action.data
+        navigation: {
+          isLoaded: true,
+          items: action.data
+        }
       }
     case LOGOUT:
       return initialState

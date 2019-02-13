@@ -5,6 +5,7 @@ import CustomRoute from './CustomRoute'
 import PrivateRoute from './PrivateRoute'
 import routes from './routes'
 import Toast from '../app/components/Toast'
+import { loadNavigationData } from '../app/reducers/authReducer'
 
 import '../dist/assets/css/App.scss'
 
@@ -17,11 +18,13 @@ class App extends React.Component {
         return (
             <React.Fragment>
                 <Switch>
+                    {this.props.navigation.isLoaded && 
+                        routes.Privates.map((route, key) => (
+                            <PrivateRoute {...route} key={key}/>
+                        ))
+                    }
                     {routes.PublicsWithoutSession.map((route, key) => (
                         <CustomRoute {...route} key={key}/>
-                    ))}
-                    {routes.Privates.map((route, key) => (
-                        <PrivateRoute {...route} key={key}/>
                     ))}
                 </Switch>
                 <Toast action={this.props.action}/>
@@ -30,10 +33,19 @@ class App extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
+function mapDispatchToProps(dispatch) {
     return {
-        action: state.actionReducer
+        loadNavigationData: () => {
+            dispatch(loadNavigationData())
+        }
     }
 }
 
-export default withRouter(connect(mapStateToProps)(App))
+function mapStateToProps(state) {
+    return {
+        action: state.actionReducer,
+        navigation: state.authReducer.navigation
+    }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App))

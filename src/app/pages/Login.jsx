@@ -3,9 +3,10 @@ import ReactDOM from 'react-dom'
 import { Router, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { initialInputState } from '../utils/utils'
-import { login, loadNavigationData } from '../reducers/authReducer'
+import { login } from '../reducers/authReducer'
 import { Placeholder } from '../components/FormControl'
 import { setAction } from '../reducers/actionReducer'
+import { loadNavigationData } from '../reducers/authReducer'
 
 class Login extends React.Component {
     constructor(props) {
@@ -25,6 +26,7 @@ class Login extends React.Component {
 
     componentDidMount() {
         this.props.setAction(false)
+        this.props.loadNavigationData()
     }
 
     onClick (e) {
@@ -36,7 +38,6 @@ class Login extends React.Component {
             this.props.setAction(true, 422, "Email y Password necesarios.")
         } else {
             this.props.login(emailValue, passwordValue)
-            this.props.loadNavigationData()
         }
     }
 
@@ -103,6 +104,9 @@ function mapDispatchToProps(dispatch) {
         },
         setAction: (shouldItBeSeen, actionStatus, actionMessage) => {
             dispatch(setAction(shouldItBeSeen, actionStatus, actionMessage))
+        },
+        loadNavigationData: () => {
+            dispatch(loadNavigationData())
         }
     }
 }

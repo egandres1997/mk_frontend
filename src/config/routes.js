@@ -3,6 +3,7 @@ import Blank from '../app/pages/layouts/Blank'
 import Home from '../app/pages/Home'
 import Login from '../app/pages/Login'
 import SaleManager from '../app/pages/SaleManager'
+import configureStore from './store'
 
 const routes = {
 	Privates: [
