@@ -1,4 +1,4 @@
-import configureStore from '../../config/store'
+import configureStore from '../config/store'
 import { setAction } from '../reducers/actionReducer'
 
 export const getConfig = () => {

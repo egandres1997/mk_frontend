@@ -1,43 +1,29 @@
-import { createStore, applyMiddleware } from 'redux'
+import mainReducer from '../reducers'
 import thunkMiddleware from 'redux-thunk'
+import { createStore, applyMiddleware, compose } from 'redux'
 import { createLogger } from 'redux-logger'
-import { routerMiddleware } from 'react-router-redux'
-import { persistStore, persistCombineReducers } from 'redux-persist'
-import storageSession from 'redux-persist/lib/storage/session'
-import authReducer from '../app/reducers/authReducer'
-import managerReducer from '../app/reducers/managerReducer'
-import actionReducer from '../app/reducers/actionReducer'
+import { routerMiddleware } from 'connected-react-router'
+import { persistStore } from 'redux-persist'
+import { createBrowserHistory } from 'history'
 
-const config = {
-	key: 'primary',
-	storage: storageSession
-}
+export const history = createBrowserHistory()
 
-const rootReducer = persistCombineReducers(config, {
-  authReducer,
-  managerReducer,
-  actionReducer
-});
-
-const loggerMiddleware = createLogger();
-
-const store = createStore(
-    rootReducer,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+let store = createStore(
+  mainReducer(history),
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+  compose(
     applyMiddleware(
-        thunkMiddleware,
-        routerMiddleware(history),
-        loggerMiddleware
+      thunkMiddleware,
+      routerMiddleware(history),
+      createLogger({ collapsed: true })
     )
+  )
 )
-
 let persistor = persistStore(
-    store,
-    null,
-    (
-    ) => {
-        store.getState()
-    }
+  store,
+  null,
+  () => store.getState()
 )
 
 export default ({ store, persistor })
+

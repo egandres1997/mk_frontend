@@ -1,8 +1,8 @@
-import Main from '../app/pages/layouts/Main'
-import Blank from '../app/pages/layouts/Blank'
-import Home from '../app/pages/Home'
-import Login from '../app/pages/Login'
-import SaleManager from '../app/pages/SaleManager'
+import Main from './pages/layouts/Main'
+import Blank from './pages/layouts/Blank'
+import Home from './pages/Home'
+import Login from './pages/Login'
+import SaleManager from './pages/SaleManager'
 
 const routes = {
 	Privates: [
@@ -19,7 +19,7 @@ const routes = {
 			layout: Main
 		}
 	],
-	PublicsWithoutSession: [
+	WithoutSession: [
 		{
 			path: '/login',
 			exact: true,

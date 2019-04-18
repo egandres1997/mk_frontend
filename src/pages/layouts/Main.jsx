@@ -1,9 +1,9 @@
 import React from 'react';
-import Progress from '../../components/Progress';
-import Navigation from '../../components/Navigation';
-import Footer from '../../components/Footer';
-import TopHeader from '../../components/TopHeader';
-import { correctHeight, detectBody } from './Helpers';
+import Progress from '../../template/Progress';
+import Navigation from '../../template/Navigation';
+import Footer from '../../template/Footer';
+import TopHeader from '../../template/TopHeader';
+import { correctHeight, detectBody } from '../../template/Helpers';
 
 class Main extends React.Component {
 

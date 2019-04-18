@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Route, Redirect, withRouter } from 'react-router-dom'
-import { logoutAction } from '../app/reducers/authReducer'
+import { logoutAction } from '../reducers/authReducer'
 
 export class PrivateRoute extends React.Component {
 

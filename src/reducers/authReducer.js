@@ -1,7 +1,7 @@
 import axios from 'axios'
-import api from '../../config/api/endpoints'
+import api from '../config/api/endpoints'
 import { getConfig, getErrorResponse } from '../utils/utils'
-import history from '../../config/history'
+import { history }  from '../config/store'
 
 const initialState = {
   user: {},

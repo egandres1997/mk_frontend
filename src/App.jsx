@@ -1,10 +1,10 @@
 import React from 'react'
-import { Router, Route, Switch, withRouter } from 'react-router-dom'
+import { Switch, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import CustomRoute from './CustomRoute'
-import PrivateRoute from './PrivateRoute'
+import CustomRoute from './utils/CustomRoute'
+import PrivateRoute from './utils/PrivateRoute'
 import routes from './routes'
-import Toast from '../app/components/Toast'
+import Toast from './utils/Toast'
 
 import '../dist/assets/css/App.scss'
 
@@ -17,14 +17,14 @@ class App extends React.Component {
         return (
             <React.Fragment>
                 <Switch>
-                    {routes.PublicsWithoutSession.map((route, key) => (
-                        <CustomRoute {...route} key={key}/>
+                    {routes.WithoutSession.map((route, key) => (
+                        <CustomRoute {...route} key={key} />
                     ))}
                     {routes.Privates.map((route, key) => (
-                        <PrivateRoute {...route} key={key}/>
+                        <PrivateRoute {...route} key={key} />
                     ))}
                 </Switch>
-                <Toast action={this.props.action}/>
+                <Toast action={this.props.action} />
             </React.Fragment>
         )
     }

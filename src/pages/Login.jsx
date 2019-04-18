@@ -1,10 +1,8 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import { Router, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { initialInputState } from '../utils/utils'
 import { login, loadNavigationData } from '../reducers/authReducer'
-import { Placeholder } from '../components/FormControl'
+import { Placeholder } from '../utils/FormControl'
 import { setAction } from '../reducers/actionReducer'
 
 class Login extends React.Component {

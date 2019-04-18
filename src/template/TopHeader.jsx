@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dropdown } from 'react-bootstrap';
-import { smoothlyMenu } from '../pages/layouts/Helpers';
+import { smoothlyMenu } from '../template/Helpers';
 
 class TopHeader extends React.Component {
 
@@ -13,7 +13,7 @@ class TopHeader extends React.Component {
     render() {
         return (
             <div className="row border-bottom">
-                <nav className="navbar navbar-static-top white-bg" role="navigation" style={{marginBottom: 0}}>
+                <nav className="navbar navbar-static-top white-bg" role="navigation" style={{ marginBottom: 0 }}>
                     <div className="navbar-header">
                         <a className="navbar-minimalize minimalize-styl-2 btn btn-primary " onClick={this.toggleNavigation} href="#"><i className="fa fa-bars"></i> </a>
                     </div>
