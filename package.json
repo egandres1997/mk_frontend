@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --config ./webpack.config.dev.js --mode development"
+    "start": "webpack-dev-server --config ./webpack.config.dev.js --mode development --open"
   },
   "keywords": [],
   "author": "",
